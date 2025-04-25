@@ -6,9 +6,15 @@ const studentScholarshipSchema = new mongoose.Schema({
         required: true,
         ref: "User"
     },
-    date: {type: Date},
-    numHours: { type: Number },
-    sumMoney: { type: Number }
+    date: {type: Date,
+        required: true
+    },
+    numHours: { type: Number,
+        required: true
+     },
+    sumMoney: { type: Number,
+        required: true
+     }
 }, { timestamps: true })
 
 module.exports = mongoose.model("StudentScholarship", studentScholarshipSchema)

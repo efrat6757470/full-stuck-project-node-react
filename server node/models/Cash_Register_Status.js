@@ -3,8 +3,11 @@ const cashRegisterStatusSchema = new mongoose.Schema({
     action: {
         type: String,
         enum: ['Expense', 'Income'],
+        required:true
     },
-    sumPerAction:{type:Number},
+    sumPerAction:{type:Number,
+        required: true
+    },
     currentSum: { type: Number }
 }, { timestamps: true })
 module.exports = mongoose.model("Cash_Register_Status", cashRegisterStatusSchema)

@@ -42,7 +42,7 @@ const updateBankDetails=async(req,res)=>{
         bankDetails.bankAccount=bankAccount
     if(bankBranch)
         bankDetails.bankBranch=bankBranch
-    const updatedBankDetails=await BankDetails.save()
+    const updatedBankDetails=await bankDetails.save()
     res.json(updatedBankDetails)
 
 }

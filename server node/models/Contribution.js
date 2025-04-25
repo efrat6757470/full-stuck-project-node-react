@@ -6,8 +6,14 @@ const contributionSchema = new mongoose.Schema({
         required: true,
         ref: "User"
     },
-    date:{type:Date},
-    sumContribution:{type:Number}
+    date: {
+        type: Date,
+        required: true
+    },
+    sumContribution: {
+        type: Number,
+        required: true
+    }
 }, { timestamps: true })
 
 module.exports = mongoose.model("Contribution", contributionSchema)

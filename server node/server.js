@@ -16,7 +16,7 @@ app.use(express.json())
 //routes
 app.use("/api/auth",require("./routers/authRoutes"))
 app.use("/api/bankDetails",require("./routers/bank_details_routes"))
-
+app.use("/api/contribution",require("./routers/contribution_routes"))
 app.get("/",(req,res)=>{
     res.send("home")
 })
