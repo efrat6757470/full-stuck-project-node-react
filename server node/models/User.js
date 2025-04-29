@@ -35,10 +35,12 @@ const userSchema = new mongoose.Schema({
     },
     birthDate: {
         type: Date
-    }, roles: {
+    }, 
+    roles: {
         type: String,
         enum: ['User', 'Admin','Donor'],
         default: "User",
+        required:true
     },
     active:{
         type:Boolean,

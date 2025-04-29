@@ -5,6 +5,10 @@ const cashRegisterStatusSchema = new mongoose.Schema({
         enum: ['Expense', 'Income'],
         required:true
     },
+    date: {
+        type: Date,
+        required: true
+    },
     sumPerAction:{type:Number,
         required: true
     },

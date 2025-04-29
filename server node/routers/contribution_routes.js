@@ -1,10 +1,10 @@
 const express=require("express")
-const router=express.router()
+const router=express.Router()
 const contributionController=require("../controllers/contribution_controller")
 router.post("/",contributionController.addContrbution)
 router.get("/",contributionController.getAllContrbutions)
-router.get(":id",contributionController.getContrbutionById)
+router.get("/:id",contributionController.getContrbutionById)
 router.put("/",contributionController.updateContribution)
-router.delete("/",contributionController.deleteContribution)
+router.delete("/:id",contributionController.deleteContribution)
 
 module.exports=router

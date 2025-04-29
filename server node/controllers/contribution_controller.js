@@ -1,24 +1,33 @@
+//vvvvvvvvvvvvv
 const Contribution=require("../models/Contribution")
-const addContrbution=async(req,res)=>{
+const User=require("../models/User")
+const addContrbution=async(req,res)=>{///////////vvvvvvvvv
     const {donor,date,sumContribution}=req.body
     if(!donor||!date||!sumContribution)
-        return res.status(400).send("All fields are required ")
-    const existDonor = await User.findOne({donor}).lean()
+        return res.status(406).send("All fields are required ")
+    if(!Contribution.find())
+        return res.status(400).send("There Donor is not exist")
+
+    const existDonor = await User.findOne({_id:donor}).lean()
     if (!existDonor)
         return res.status(400).send("Donor is not exist")
     const contribution = await Contribution.create({donor,date,sumContribution})
     res.json(contribution)
 }
 
-const getAllContrbutions = async (req, res) => {
-    const allContrbutions = await Contribution.find().sort({_id:1}).lean()
+const getAllContrbutions = async (req, res) => {//vvvvvvvvvv
+    const allContrbutions = await Contribution.find().lean()
     res.json(allContrbutions)
 }
 
-const getContrbutionById = async (req, res) => {
+const getContrbutionById = async (req, res) => {//vvvvvvvvv
+    console.log("jisoaphd");
     const { id } = req.params
+    console.log(id);
     if (!id)
         return res.status(400).send("Id is required")
+    if(!Contribution.find())
+        return res.status(400).send("There are no contribution ")
     const allContributions = await Contribution.find().lean()
     if (!allContributions?.length)
         return res.status(400).send("No contribution exists")
@@ -28,7 +37,7 @@ const getContrbutionById = async (req, res) => {
     res.json(contribution)
 }
 
-const updateContribution=async(req,res)=>{
+const updateContribution=async(req,res)=>{/////////vvvvvvvvvvvvvvv
     const {id,donor,date,sumContribution}=req.body
     if(!id)
         return res.status(400).send("Id is required")
@@ -44,7 +53,7 @@ const updateContribution=async(req,res)=>{
     const updatedContribution=await contribution.save()
     res.json(updatedContribution)
 }
-const deleteContribution = async (req, res) => {
+const deleteContribution = async (req, res) => {//vvvvvvvvvvvvvvvvvvvv
     const { id } = req.params
     if (!id)
         return res.status(400).send("Id is required")
