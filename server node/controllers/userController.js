@@ -34,14 +34,22 @@ const updateUser = async (req, res) => {//////check unique userId
         return res.status(400).json({ message: 'No users found' })
     }
     const user = await User.findById(id).exec()
+
     if (!user)
         return res.status(400).send("user is not exists")
     if (userId) {
-
-
+        // if (userId !== req.user.userId) {//צריך authentication req.user.userId לא מכיר 
+        //     const exsistUser = await User.findById(userId).exec()
+        //     if (exsistUser)
+        //         return res.status(400).send("There is user with same userId")
+        // }
+        const existingUser = await User.findOne({ userId });//זמני
+        if (existingUser) {//זמני
+            return res.status(400).send("User with same userId already exists");//זמני
+        }//זמני
         user.userId = userId
     }
-     if (password)
+    if (password)
         user.password = password
     if (fullname)
         user.fullname = fullname

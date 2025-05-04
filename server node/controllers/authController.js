@@ -1,5 +1,5 @@
 const bcrypt = require("bcrypt")
-const jwt=require("jsonwebtoken")
+const jwt = require("jsonwebtoken")
 const User = require("../models/User")
 //const { JsonWebTokenError } = require("jsonwebtoken")
 const login = async (req, res) => {
@@ -13,49 +13,48 @@ const login = async (req, res) => {
         return res.status(400).json({ message: 'No users found' })
     }
     const foundUser = await User.findOne({ userId }).lean()
-    console.log("foundUser.active");
-    console.log(foundUser.active);
-    console.log("foundUser.password");
-    console.log(foundUser.password);
-    //console.log(foundUser.active);
+
     if (!foundUser || !foundUser.active) {
-       
-        return res.status(401).json({ message: 'Unauthorized' })}
-        const match = await bcrypt.compare(password, foundUser.password)///////////????????????????
-
-    console.log(password);
-     if (!match)
-            return res.status(401).json({ message: 'Unauthorized' })
-        const userInfo= {_id:foundUser._id,fullname:foundUser.fullname,
-            phone:foundUser.phone, address:foundUser.address,
-            email:foundUser.email,birthDate:foundUser.birthDate,active:foundUser.active,userId:foundUser.userId}
-            const accessToken=
-            jwt.sign(userInfo,process.env.ACCESS_TOKEN_SECRET)
-            res.json({accessToken:accessToken})
+        return res.status(401).json({ message: 'Unauthorized' })
     }
+    const match = await bcrypt.compare(password, foundUser.password)///////////vvvvvvvvvvv
 
-    const register = async (req, res) => {////vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
-        console.log("hdiohf;sh");
-        const { userId, password, fullname, email, phone, address, birthDate, active ,roles} = req.body
-        if (!userId || !password || !fullname||!roles) {
-            return res.status(400).json({ message: 'userId, roles, password and fullname are required' })
-        }
-        const duplicate = await User.findOne({ userId}).lean()
-        if (duplicate) {
-            return res.status(409).json({ message: "Duplicate user id" })
-        }
-        if(roles!=='Donor'&& roles!=='Admin'&& roles!=='User')
-            return res.status(400).send("roles must be User or Donor or Admin!!")
-        const hashedPassword = await bcrypt.hash(password, 10)
-        console.log(hashedPassword);
-
-        const userObject = { userId, password: hashedPassword, fullname, email, phone, address, birthDate, active,roles }
-        const user = await User.create(userObject)
-        if (user) { // Created
-            return res.status(201).json({ message: `New user ${user.fullname} created`,
-            user })
-        } else {
-            return res.status(400).json({ message: 'Invalid user received' })
-        }
+    if (!match)
+        return res.status(401).json({ message: 'Unauthorized' })
+    const userInfo = {
+        _id: foundUser._id, fullname: foundUser.fullname,
+        phone: foundUser.phone, address: foundUser.address,
+        email: foundUser.email, birthDate: foundUser.birthDate, active: foundUser.active, userId: foundUser.userId
     }
-    module.exports = { login, register }
+    const accessToken =
+        jwt.sign(userInfo, process.env.ACCESS_TOKEN_SECRET)
+    res.json({ accessToken: accessToken })
+}
+
+const register = async (req, res) => {////vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+    console.log("hdiohf;sh");
+    const { userId, password, fullname, email, phone, address, birthDate, active, roles } = req.body
+    if (!userId || !password || !fullname || !roles) {
+        return res.status(400).json({ message: 'userId, roles, password and fullname are required' })
+    }
+    const duplicate = await User.findOne({ userId }).lean()
+    if (duplicate) {
+        return res.status(409).json({ message: "Duplicate user id" })
+    }
+    if (roles !== 'Donor' && roles !== 'Admin' && roles !== 'User')
+        return res.status(400).send("roles must be User or Donor or Admin!!")
+    const hashedPassword = await bcrypt.hash(password, 10)
+    console.log(hashedPassword);
+
+    const userObject = { userId, password: hashedPassword, fullname, email, phone, address, birthDate, active, roles }
+    const user = await User.create(userObject)
+    if (user) { // Created
+        return res.status(201).json({
+            message: `New user ${user.fullname} created`,
+            user
+        })
+    } else {
+        return res.status(400).json({ message: 'Invalid user received' })
+    }
+}
+module.exports = { login, register }

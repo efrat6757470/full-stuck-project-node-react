@@ -21,7 +21,6 @@ const getAllContrbutions = async (req, res) => {//vvvvvvvvvv
 }
 
 const getContrbutionById = async (req, res) => {//vvvvvvvvv
-    console.log("jisoaphd");
     const { id } = req.params
     console.log(id);
     if (!id)
