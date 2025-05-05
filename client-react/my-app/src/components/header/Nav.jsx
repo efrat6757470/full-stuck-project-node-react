@@ -30,6 +30,20 @@ const Nav=()=>{
             command: () => {
                 navigate('./users')
             }
+        },
+        {
+            label: 'Students',
+            icon: 'pi pi-user',
+            command: () => {
+                navigate('./students')
+            }
+        },
+        {
+            label: 'Students',
+            icon: 'pi pi-user',
+            command: () => {
+                navigate('./students')
+            }
         }]
     return(
         <>
@@ -38,4 +52,4 @@ const Nav=()=>{
     )
 }
 
-export default Nav
+export default Nav;

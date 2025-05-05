@@ -7,6 +7,21 @@ const getAllUsers = async (req, res) => {//vvvvvvvvvvv
     }
     res.json(users)
 }
+const getAllStudents = async (req, res) => {//vvvvvvvvvvv
+    const students = await User.find({roles:"Student"}).lean()
+    if (!students?.length) {
+        return res.status(400).json({ message: 'No students found' })
+    }
+    res.json(students)
+}
+const getAllDonors = async (req, res) => {//vvvvvvvvvvvvvvvvvv
+    const donors = await User.find({roles:"Donor"}).lean()
+    if (!donors?.length) {
+        return res.status(400).json({ message: 'No donors found' })
+    }
+    res.json(donors)
+}
+
 
 const getUserById = async (req, res) => {//vvvvvvvvvvvvvvv
     const { id } = req.params
@@ -25,7 +40,7 @@ const getUserById = async (req, res) => {//vvvvvvvvvvvvvvv
 //     const user={}
 // }
 
-const updateUser = async (req, res) => {//////check unique userId
+const updateUser = async (req, res) => {////vvvvvvvvvvvvv
     const { userId, password, fullname, email, phone, street, numOfBulding, city, dateOfBirth, roles, id } = req.body
     if (!id)
         return res.status(400).send("Id is required")
@@ -38,15 +53,11 @@ const updateUser = async (req, res) => {//////check unique userId
     if (!user)
         return res.status(400).send("user is not exists")
     if (userId) {
-        // if (userId !== req.user.userId) {//צריך authentication req.user.userId לא מכיר 
-        //     const exsistUser = await User.findById(userId).exec()
-        //     if (exsistUser)
-        //         return res.status(400).send("There is user with same userId")
-        // }
-        const existingUser = await User.findOne({ userId });//זמני
-        if (existingUser) {//זמני
-            return res.status(400).send("User with same userId already exists");//זמני
-        }//זמני
+        
+        const existingUser = await User.findOne({ userId });
+        if (existingUser && user.userId!=userId) {
+            return res.status(400).send("User with same userId already exists");
+        }
         user.userId = userId
     }
     if (password)
@@ -66,7 +77,7 @@ const updateUser = async (req, res) => {//////check unique userId
     if (dateOfBirth)
         user.dateOfBirth = dateOfBirth
     if (roles) {
-        if (roles !== 'Donor' && roles !== 'Admin' && roles !== 'User')
+        if (roles !== 'Donor' && roles !== 'Admin' && roles !== 'Student')
             return res.status(400).send("roles must be User or Donor or Admin!!")
         user.roles = roles
 
@@ -91,4 +102,4 @@ const deleteUserById = async (req, res) => {//vvvvvvvvvvvvvvv
     res.send(result)
 }
 
-module.exports = { getAllUsers, getUserById, updateUser, deleteUserById }
+module.exports = { getAllUsers, getUserById, updateUser, deleteUserById,getAllDonors,getAllStudents }

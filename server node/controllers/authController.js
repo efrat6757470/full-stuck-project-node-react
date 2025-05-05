@@ -41,7 +41,7 @@ const register = async (req, res) => {////vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
     if (duplicate) {
         return res.status(409).json({ message: "Duplicate user id" })
     }
-    if (roles !== 'Donor' && roles !== 'Admin' && roles !== 'User')
+    if (roles !== 'Donor' && roles !== 'Admin' && roles !== 'Student')
         return res.status(400).send("roles must be User or Donor or Admin!!")
     const hashedPassword = await bcrypt.hash(password, 10)
     console.log(hashedPassword);
