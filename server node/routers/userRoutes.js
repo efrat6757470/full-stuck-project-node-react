@@ -1,12 +1,14 @@
 const express=require("express")
 const router=express.Router()
 const userConroller=require("../controllers/userController")
-router.get("/",userConroller.getAllUsers)
-router.get("/donor",userConroller.getAllDonors)
+const verifyJWTAdmin=require("../middleware/verifyJWT_admin")
 
-router.get("/student",userConroller.getAllStudents)
+router.get("/",verifyJWTAdmin,userConroller.getAllUsers)
+router.get("/donor",verifyJWTAdmin,userConroller.getAllDonors)
 
-router.get("/:id",userConroller.getUserById)
-router.put("/",userConroller.updateUser)
-router.delete("/:id",userConroller.deleteUserById)
+router.get("/student",verifyJWTAdmin,userConroller.getAllStudents)
+
+router.get("/:id",verifyJWTAdmin,userConroller.getUserById)
+router.put("/",verifyJWTAdmin,userConroller.updateUser)
+router.delete("/:id",verifyJWTAdmin,userConroller.deleteUserById)
 module.exports=router

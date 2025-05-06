@@ -4,9 +4,9 @@ const User=require("../models/User")
 const addContrbution=async(req,res)=>{///////////vvvvvvvvv
     const {donor,date,sumContribution}=req.body
     if(!donor||!date||!sumContribution)
-        return res.status(406).send("All fields are required ")
+        return res.status(400).send("All fields are required ")
     if(!Contribution.find())
-        return res.status(400).send("There Donor is not exist")
+        return res.status(404).send("No Donors exist")
 
     const existDonor = await User.findOne({_id:donor}).lean()
     if (!existDonor)
@@ -17,6 +17,8 @@ const addContrbution=async(req,res)=>{///////////vvvvvvvvv
 
 const getAllContrbutions = async (req, res) => {//vvvvvvvvvv
     const allContrbutions = await Contribution.find().lean()
+    if(!allContrbutions?.length)
+        res.json([])
     res.json(allContrbutions)
 }
 
@@ -25,11 +27,10 @@ const getContrbutionById = async (req, res) => {//vvvvvvvvv
     console.log(id);
     if (!id)
         return res.status(400).send("Id is required")
-    if(!Contribution.find())
-        return res.status(400).send("There are no contribution ")
+    
     const allContributions = await Contribution.find().lean()
     if (!allContributions?.length)
-        return res.status(400).send("No contribution exists")
+        return res.status(404).send("No contribution exists")
     const contribution = await Contribution.findById(id).lean()
     if (!contribution)
         return res.status(400).send("contribution is not exists")
@@ -54,7 +55,7 @@ const updateContribution=async(req,res)=>{/////////vvvvvvvvvvvvvvv
 }
 const deleteContribution = async (req, res) => {//vvvvvvvvvvvvvvvvvvvv
     const { id } = req.params
-    if (!id)
+    if (!id) 
         return res.status(400).send("Id is required")
     const contribution = await Contribution.findById(id).exec()
     if (!contribution)

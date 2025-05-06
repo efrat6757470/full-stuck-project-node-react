@@ -3,22 +3,20 @@ const User = require("../models/User")
 const getAllUsers = async (req, res) => {//vvvvvvvvvvv
     const users = await User.find().lean()
     if (!users?.length) {
-        return res.status(400).json({ message: 'No users found' })
-    }
+         res.json([])
+        }
+
     res.json(users)
 }
 const getAllStudents = async (req, res) => {//vvvvvvvvvvv
     const students = await User.find({roles:"Student"}).lean()
     if (!students?.length) {
-        return res.status(400).json({ message: 'No students found' })
-    }
+        res.json([])    }
     res.json(students)
 }
 const getAllDonors = async (req, res) => {//vvvvvvvvvvvvvvvvvv
     const donors = await User.find({roles:"Donor"}).lean()
-    if (!donors?.length) {
-        return res.status(400).json({ message: 'No donors found' })
-    }
+    
     res.json(donors)
 }
 
@@ -27,7 +25,7 @@ const getUserById = async (req, res) => {//vvvvvvvvvvvvvvv
     const { id } = req.params
     const users = await User.find().lean()
     if (!users)
-        return res.status(400).send("No users exists")
+        return res.status(404).send("No users exists")
     if (!id)
         return res.status(400).send("Id is required")
     const user = await User.findById(id).lean()
@@ -46,7 +44,7 @@ const updateUser = async (req, res) => {////vvvvvvvvvvvvv
         return res.status(400).send("Id is required")
     const users = await User.find().lean()
     if (!users?.length) {
-        return res.status(400).json({ message: 'No users found' })
+        return res.status(404).json({ message: 'No users found' })
     }
     const user = await User.findById(id).exec()
 
@@ -93,7 +91,7 @@ const deleteUserById = async (req, res) => {//vvvvvvvvvvvvvvv
         return res.status(400).send("Id is required")
     const users = await User.find().lean()
     if (!users?.length) {
-        return res.status(400).json({ message: 'No users found' })
+        return res.status(404).json({ message: 'No users found' })
     }
     const user = await User.findById(id).exec()
     if (!user)

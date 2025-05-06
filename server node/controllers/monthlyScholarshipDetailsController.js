@@ -10,6 +10,8 @@ const addMonthlyScholarshipDetails=async(req,res)=>{//vvvvvvvvvv
 
 const getAllMonthlyScholarshipDetails=async(req,res)=>{//vvvvvvvvvvvvv
     const allMonthlyScholarshipDetails= await MonthlyScholarshipDetails.find().lean()
+    if(!getAllMonthlyScholarshipDetails?.length)
+        res.json([])
     res.json(allMonthlyScholarshipDetails)
 }   
 
@@ -19,7 +21,7 @@ const getMonthlyScholarshipDetailsById=async (req,res)=>{//vvvvvvvvvvvvvvv
         return res.status(400).send("Id is required")
     const allMonthlyScholarshipDetails= await MonthlyScholarshipDetails.find().lean()
     if(!allMonthlyScholarshipDetails?.length)
-        return res.status(400).send("No monthlyScholarshipDetails exists")
+        return res.status(404).send("No monthlyScholarshipDetails exists")
     const monthlyScholarshipDetails=await MonthlyScholarshipDetails.findById(id).lean()
     if(!monthlyScholarshipDetails)
         return res.status(400).send("monthlyScholarshipDetails is not exists")

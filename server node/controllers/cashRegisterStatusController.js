@@ -2,16 +2,15 @@ const CashRegisterStatus = require("../models/Cash_Register_Status")
 
 const getAllCashRegisterStatus = async (req, res) => {//vvvvvvvvvvvvvvvvvv
     const cashregistersatuses = await CashRegisterStatus.find().lean()
-    // if (!cashregistersatuses?.length) {
-    //     return res.status(400).json({ message: 'No cashregistersatus found' })
-    // }
+    if (!cashregistersatuses?.length) {
+        res.json([])    }
     res.json(cashregistersatuses)
 }
 const getCashRegisterStatusById = async (req, res) => {//vvvvvvvvvvvv
     const { id } = req.params
     const cashregistersatuses = await CashRegisterStatus.find().lean()
     if (!cashregistersatuses?.length)
-        return res.status(400).send("No cashregistersatuses exists")
+        return res.status(404).send("No cashregistersatuses exists")
     if (!id)
         return res.status(400).send("Id is required")
     const cashregistersatus = await CashRegisterStatus.findById(id).lean()
@@ -37,7 +36,7 @@ const updateCashRegisterStatus = async (req, res) => {//vvvvvvvvvvvvvvv
         return res.status(400).send("Id is required")
     const cashregistersatuses = await CashRegisterStatus.find().lean()
     if (!cashregistersatuses?.length)
-        return res.status(400).send("No cashregistersatuses exists")
+        return res.status(404).send("No cashregistersatuses exists")
     const cashregistersatus = await CashRegisterStatus.findById(id).exec()
     if (!cashregistersatus)
         return res.status(400).send("cashregistersatus is not exists")
@@ -59,7 +58,7 @@ const deleteCashRegisterStatusById = async (req, res) => {//vvvvvvvvvvvv
         return res.status(400).send("Id is required")
     const cashregistersatuses = await CashRegisterStatus.find().lean()
     if (!cashregistersatuses?.length)
-        return res.status(400).send("No cashregistersatuses exists")
+        return res.status(404).send("No cashregistersatuses exists")
     const cashregistersatus = await CashRegisterStatus.findById(id).exec()
     if (!cashregistersatus)
         return res.status(400).send("cashregistersatus is not exists")

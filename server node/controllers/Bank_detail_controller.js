@@ -10,7 +10,7 @@ const addBankDetails=async(req,res)=>{
         return res.status(400).send(" field must be a number ")//////////////////////////////////////אם ריק יש שגיאה
     }
     if(!User.find())
-        return res.status(400).send("There are no users ")
+        return res.status(404).send("There are no users ")
     const existStudent = await User.findOne({_id:student}).lean()
     if (existStudent)
         return res.status(400).send("BankDetails of this student exists")
@@ -20,6 +20,8 @@ const addBankDetails=async(req,res)=>{
 }
 const getAllBankDetails = async (req, res) => {/////////vvvvvvvvvvvvvvvvvvv
     const allBankDetails = await BankDetails.find().lean()
+    if(!allBankDetails?.length)
+        res.json([])
     res.json(allBankDetails)
 }
 const getBankDetailsById = async (req, res) => {/////////vvvvvvvvvvvvvvvvvvv
@@ -27,10 +29,10 @@ const getBankDetailsById = async (req, res) => {/////////vvvvvvvvvvvvvvvvvvv
     if (!id)
         return res.status(400).send("Id is required")
     if(!User.find())
-        return res.status(400).send("There are no users ")
+        return res.status(404).send("There are no users ")
     const allBankDetails = await BankDetails.find().lean()
     if (!allBankDetails?.length)
-        return res.status(400).send("No bankDetails exists")
+        return res.status(404).send("No bankDetails exists")
     const bankDetails = await BankDetails.findById(id).lean()
     if (!bankDetails)
         return res.status(400).send("bankDetails is not exists")
@@ -45,7 +47,7 @@ const updateBankDetails=async(req,res)=>{//////////////////vvvvvvvvvvvvvvvvvvv
         return res.status(400).send(" field must be a number ")
     }
     if(!User.find())
-        return res.status(400).send("There are no users ")
+        return res.status(404).send("There are no users ")
     const bankDetails = await BankDetails.findById(id).exec()
     
     if (!bankDetails)
@@ -67,7 +69,7 @@ const deleteBankDetails = async (req, res) => {//////////////////////vvvvvvvvvvv
     if (!id)
         return res.status(400).send("Id is required")
     if(!User.find())
-        return res.status(400).send("There are no users ")
+        return res.status(404).send("There are no users ")
     const bankDetails = await BankDetails.findById(id).exec()
     if (!bankDetails)
         return res.status(400).send("BankDetails is not exists")

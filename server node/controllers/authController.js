@@ -10,7 +10,7 @@ const login = async (req, res) => {
     }
     const users = await User.find().lean()
     if (!users?.length) {
-        return res.status(400).json({ message: 'No users found' })
+        return res.status(404).json({ message: 'No users found' })
     }
     const foundUser = await User.findOne({ userId }).lean()
 
