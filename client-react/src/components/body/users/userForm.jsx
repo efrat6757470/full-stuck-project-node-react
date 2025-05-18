@@ -18,8 +18,9 @@ const UserForm = ({ studentDialog, setStudentDialog, getStudents, student, setAd
         fullname: student?.fullname,
         phone: student?.phone,
         email: student?.email,
-        address: student?.address,
-        birthDate: student?.birthDate,
+        city: student?.address?.city || "",
+        street: student?.address?.street || "",
+        buildingNumber: student?.address?.buildingNumber || "",        birthDate: student?.birthDate,
         roles: student?.roles,
         userId: student?.userId
     }
@@ -126,12 +127,32 @@ const UserForm = ({ studentDialog, setStudentDialog, getStudents, student, setAd
                                 <label htmlFor="phone" className={classNames({ 'p-error': errors.name })}>Phone</label>
                             </span>
                         </div>
+                        <div>address:</div>
+                        <br></br>
                         <div className="field">
                             <span className="p-float-label">
-                                <Controller name="address" control={control} render={({ field, fieldState }) => (
-                                    <InputText id={field.name} {...field} autoFocus className={classNames({ 'p-invalid': fieldState.invalid })} />
+                                <Controller name="city" control={control} render={({ field, fieldState }) => (
+                                    <InputText id={field.city} {...field} autoFocus className={classNames({ 'p-invalid': fieldState.invalid })} />
                                 )} />
-                                <label htmlFor="address" className={classNames({ 'p-error': errors.name })}>Address</label>
+                                <label htmlFor="city" className={classNames({ 'p-error': errors.name })}>City</label>
+                            </span>
+
+                        </div>
+                        <div className="field">
+                            <span className="p-float-label">
+                                <Controller name="street" control={control} render={({ field, fieldState }) => (
+                                    <InputText id={field.street} {...field} autoFocus className={classNames({ 'p-invalid': fieldState.invalid })} />
+                                )} />
+                                <label htmlFor="street" className={classNames({ 'p-error': errors.name })}>Street</label>
+                            </span>
+
+                        </div>
+                        <div className="field">
+                            <span className="p-float-label">
+                                <Controller name="buildingNumber" control={control} render={({ field, fieldState }) => (
+                                    <InputText id={field.buildingNumber} {...field} autoFocus className={classNames({ 'p-invalid': fieldState.invalid })} />
+                                )} />
+                                <label htmlFor="buildingNumber" className={classNames({ 'p-error': errors.name })}>Building Number</label>
                             </span>
 
                         </div>

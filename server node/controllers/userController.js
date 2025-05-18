@@ -38,7 +38,7 @@ const getUserById = async (req, res) => {//vvvvvvvvvvvvvvv
 }
 
 const addUser=async (req,res)=>{
-    const { userId, password, fullname, email, phone, address, birthDate, active, roles } = req.body
+    const { userId, password, fullname, email, phone, city,buildingNumber,street, birthDate, active, roles } = req.body
     if (!userId || !password || !fullname || !roles) {
         return res.status(400).json({ message: 'userId, roles, password and fullname are required' })
     }
@@ -51,7 +51,7 @@ const addUser=async (req,res)=>{
     const hashedPassword = await bcrypt.hash(password, 10)
     console.log(hashedPassword);
 
-    const userObject = { userId, password: hashedPassword, fullname, email, phone, address, birthDate, active, roles }
+    const userObject = { userId, password: hashedPassword, fullname, email, phone, address:{city,street,buildingNumber}, birthDate, active, roles }
     const user = await User.create(userObject)
     if (user) { // Created
         return res.status(201).json({
@@ -64,7 +64,7 @@ const addUser=async (req,res)=>{
 }
 
 const updateUser = async (req, res) => {////vvvvvvvvvvvvv
-    const { userId, password, fullname, email, phone, street, numOfBulding, city, dateOfBirth, roles, id } = req.body
+    const { userId, password, fullname, email, phone, street, buildingNumber, city, dateOfBirth, roles, id } = req.body
     if (!id)
         return res.status(400).send("Id is required")
     const users = await User.find().lean()
@@ -92,11 +92,11 @@ const updateUser = async (req, res) => {////vvvvvvvvvvvvv
     if (phone)
         user.phone = phone
     if (street)
-        user.street = street
+        user.address.street = street
     if (city)
-        user.city = city
-    if (numOfBulding)
-        user.numOfBulding = numOfBulding
+        user.address.city = city
+    if (buildingNumber)
+        user.address.buildingNumber = buildingNumber
     if (dateOfBirth)
         user.dateOfBirth = dateOfBirth
     if (roles) {

@@ -3,7 +3,6 @@ import { Card } from 'primereact/card';
 import { Button } from 'primereact/button';
 import UserForm from '../userForm';
 import { useState } from 'react';
-import { set } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 import { setToken, setUser,setRole } from '../../../../redux/tokenSlice';
@@ -28,7 +27,7 @@ export default function StudentDetails() {
             <Button label="update" icon="pi pi-check" onClick={() => showEditForm()} />
         </>
     );
-
+   
     const updateTheUser = async() => {
 
         try{
@@ -49,7 +48,10 @@ export default function StudentDetails() {
                     <p>ID: {user.userId}</p>
                     <p>email: {user.email}</p>
                     <p>phone: {user.phone}</p>
-                    <p>address: {user.address}</p>
+                    <p>address: </p>
+                    <p>street: {user.address.street}</p>
+                    <p>building number: {user.address.buildingNumber}</p>
+                    <p>city: {user.address.city}</p>
                     <p>birthDate: {user.birthDate}</p>
 
                 </p>
