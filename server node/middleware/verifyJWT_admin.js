@@ -9,12 +9,12 @@ const verifyJWTAdmin=(req,res,next)=>{
         token,
         process.env.ACCESS_TOKEN_SECRET,
         (err,decode)=>{
+            console.log(decode," i",decode.role);
             if (err||decode.role!=="Admin") 
                 return res.status(403).json({ message:
                 'Forbidden' })
               
             req.user=decode
-            console.log(req.user);
 
             next()    
         }

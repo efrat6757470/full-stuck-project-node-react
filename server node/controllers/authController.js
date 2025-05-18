@@ -4,31 +4,31 @@ const User = require("../models/User")
 //const { JsonWebTokenError } = require("jsonwebtoken")
 const login = async (req, res) => {
     const { password, userId } = req.body
-    console.log(userId);
-    if (!userId || !password) {
-        return res.status(400).json({ message: 'userId and password are required' })
-    }
-    const users = await User.find().lean()
-    if (!users?.length) {
-        return res.status(404).json({ message: 'No users found' })
-    }
+    // console.log(userId);//to change/////////////////////////////////////////////////////////////////////
+    // if (!userId || !password) {
+    //     return res.status(400).json({ message: 'userId and password are required' })
+    // }
+    // const users = await User.find().lean()
+    // if (!users?.length) {
+    //     return res.status(404).json({ message: 'No users found' })
+    // }
     const foundUser = await User.findOne({ userId }).lean()
 
     if (!foundUser || !foundUser.active) {
         return res.status(401).json({ message: 'Unauthorized' })
     }
-    const match = await bcrypt.compare(password, foundUser.password)///////////vvvvvvvvvvv
+     const match = await bcrypt.compare(password, foundUser.password)///////////vvvvvvvvvvv
 
     if (!match)
         return res.status(401).json({ message: 'Unauthorized' })
     const userInfo = {
         _id: foundUser._id, fullname: foundUser.fullname,
+        role:foundUser.roles,
         phone: foundUser.phone, address: foundUser.address,
         email: foundUser.email, birthDate: foundUser.birthDate, active: foundUser.active, userId: foundUser.userId
     }
-    const accessToken =
-        jwt.sign(userInfo, process.env.ACCESS_TOKEN_SECRET)
-    res.json({ accessToken: accessToken })
+    const accessToken = jwt.sign(userInfo, process.env.ACCESS_TOKEN_SECRET)
+    res.json({ accessToken: accessToken ,user:userInfo,role:foundUser.roles})
 }
 
 const register = async (req, res) => {////vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv

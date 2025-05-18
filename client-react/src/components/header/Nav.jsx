@@ -11,26 +11,13 @@ const Nav=()=>{
             }
         },
         {
-            label: 'posts',
+            label: 'LogOut',
             icon: 'pi pi-bars',
             command: () => {
-                navigate('./posts')
+                navigate('./logOut')
             }
         },
-        {
-            label: 'toDos',
-            icon: 'pi pi-check',
-            command: () => {
-                navigate('./todos')
-            }
-        },
-        {
-            label: 'Users',
-            icon: 'pi pi-user',
-            command: () => {
-                navigate('./users')
-            }
-        },
+        
         {
             label: 'Students',
             icon: 'pi pi-user',
@@ -39,10 +26,17 @@ const Nav=()=>{
             }
         },
         {
-            label: 'Students',
+            label: 'Contribution',
             icon: 'pi pi-user',
             command: () => {
-                navigate('./students')
+                navigate('./contribution')
+            }
+        },
+        {
+            label: 'ShowMSDetails',
+            icon: 'pi pi-user',
+            command: () => {
+                navigate('./showMSDetails')
             }
         }]
     return(

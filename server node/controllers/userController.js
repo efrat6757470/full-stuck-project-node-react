@@ -1,4 +1,5 @@
 const User = require("../models/User")
+const bcrypt = require("bcrypt")
 
 const getAllUsers = async (req, res) => {//vvvvvvvvvvv
     const users = await User.find().lean()
@@ -23,6 +24,8 @@ const getAllDonors = async (req, res) => {//vvvvvvvvvvvvvvvvvv
 
 const getUserById = async (req, res) => {//vvvvvvvvvvvvvvv
     const { id } = req.params
+    console.log(id );
+    
     const users = await User.find().lean()
     if (!users)
         return res.status(404).send("No users exists")
@@ -34,9 +37,31 @@ const getUserById = async (req, res) => {//vvvvvvvvvvvvvvv
     res.json(user)
 }
 
-// const addUser=async (req,res)=>{//auto!!!!
-//     const user={}
-// }
+const addUser=async (req,res)=>{
+    const { userId, password, fullname, email, phone, address, birthDate, active, roles } = req.body
+    if (!userId || !password || !fullname || !roles) {
+        return res.status(400).json({ message: 'userId, roles, password and fullname are required' })
+    }
+    const duplicate = await User.findOne({ userId }).lean()
+    if (duplicate) {
+        return res.status(409).json({ message: "Duplicate user id" })
+    }
+    if (roles !== 'Donor' && roles !== 'Admin' && roles !== 'Student')
+        return res.status(400).send("roles must be User or Donor or Admin!!")
+    const hashedPassword = await bcrypt.hash(password, 10)
+    console.log(hashedPassword);
+
+    const userObject = { userId, password: hashedPassword, fullname, email, phone, address, birthDate, active, roles }
+    const user = await User.create(userObject)
+    if (user) { // Created
+        return res.status(201).json({
+            message: `New user ${user.fullname} created`,
+            user
+        })
+    } else {
+        return res.status(400).json({ message: 'Invalid user received' })
+    }
+}
 
 const updateUser = async (req, res) => {////vvvvvvvvvvvvv
     const { userId, password, fullname, email, phone, street, numOfBulding, city, dateOfBirth, roles, id } = req.body
@@ -100,4 +125,4 @@ const deleteUserById = async (req, res) => {//vvvvvvvvvvvvvvv
     res.send(result)
 }
 
-module.exports = { getAllUsers, getUserById, updateUser, deleteUserById,getAllDonors,getAllStudents }
+module.exports = { getAllUsers, getUserById, updateUser, deleteUserById,getAllDonors,getAllStudents,addUser }

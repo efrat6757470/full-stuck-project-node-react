@@ -21,6 +21,7 @@ app.use("/api/cashRegisterStatus", require("./routers/cashRegisterStatusRoutes")
 app.use("/api/monthlyScholarshipDetails",require("./routers/monthlyScholarshipDetailsRoutes"))
 app.use("/api/studentScholarship",require("./routers/studentScholarshipRoutes"))
 app.use("/api/user",require("./routers/userRoutes"))
+
 app.get("/",(req,res)=>{
     res.send("home")
 })
