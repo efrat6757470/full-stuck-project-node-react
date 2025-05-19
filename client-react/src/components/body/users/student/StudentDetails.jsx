@@ -6,6 +6,8 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 import { setToken, setUser,setRole } from '../../../../redux/tokenSlice';
+import { format } from 'date-fns';
+
 
 export default function StudentDetails() {
     const { token, role, user } = useSelector((state) => state.token);
@@ -31,7 +33,9 @@ export default function StudentDetails() {
     const updateTheUser = async() => {
 
         try{
-        const res = await axios.get(`http://localhost:1111/api/user/${user._id}`);
+        const res = await axios.get(`http://localhost:1111/api/user/${user._id}`,
+            { headers: { Authorization: `Bearer ${token}` } });
+
         console.log(res.data);
         
         dispatch(setUser(res.data));}
@@ -49,10 +53,11 @@ export default function StudentDetails() {
                     <p>email: {user.email}</p>
                     <p>phone: {user.phone}</p>
                     <p>address: </p>
+                    
                     <p>street: {user.address.street}</p>
                     <p>building number: {user.address.buildingNumber}</p>
                     <p>city: {user.address.city}</p>
-                    <p>birthDate: {user.birthDate}</p>
+                    <p>birthDate: {format(user.birthDate, 'dd/MM/yyyy')}</p>
 
                 </p>
             </Card>

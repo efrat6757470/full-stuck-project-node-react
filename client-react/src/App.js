@@ -18,19 +18,38 @@ function App() {
   return (
     <div className="App">
       {role == "Admin" ? <Nav></Nav> : role == "Student" ? <StudentNav></StudentNav> : <></>}
+      {role == "Admin" ? 
       <Routes>
-
         <Route path='/' element={<Login></Login>} /> 
          <Route path='/login' element={<Login></Login>} />
         <Route path='/logOut' element={<LogOut></LogOut>} />
         <Route path='/students' element={<Students></Students>} />
         <Route path='/studentDetails' element={<StudentDetails></StudentDetails>} />
-
         <Route path='/contribution' element={<Contributions></Contributions>} />
         <Route path='/home' element={<Home></Home>}/>
         <Route path='/showMSDetails' element={<ShowMSDetails></ShowMSDetails>}/>
-        
       </Routes>
+      :role == "Student" ?
+      <Routes>
+        <Route path='/' element={<Login></Login>} /> 
+         <Route path='/login' element={<Login></Login>} />
+        <Route path='/logOut' element={<LogOut></LogOut>} />
+        <Route path='/studentDetails' element={<StudentDetails></StudentDetails>} />
+      </Routes>
+      :role == "Donor" ?
+      <Routes>
+      <Route path='/' element={<Login></Login>} /> 
+         <Route path='/login' element={<Login></Login>} />
+        <Route path='/logOut' element={<LogOut></LogOut>} />
+      <Route path='/contribution' element={<Contributions></Contributions>} />
+      </Routes>
+      :
+      <Routes>
+      <Route path='/' element={<Login></Login>} /> 
+      <Route path='/login' element={<Login></Login>} />
+     <Route path='/logOut' element={<LogOut></LogOut>} />
+   </Routes>}
+
     </div>
   );
 }

@@ -1,5 +1,6 @@
 const User = require("../models/User")
 const bcrypt = require("bcrypt")
+const mongoose = require("mongoose")
 
 const getAllUsers = async (req, res) => {//vvvvvvvvvvv
     const users = await User.find().lean()
@@ -31,6 +32,9 @@ const getUserById = async (req, res) => {//vvvvvvvvvvvvvvv
         return res.status(404).send("No users exists")
     if (!id)
         return res.status(400).send("Id is required")
+    if (!mongoose.Types.ObjectId.isValid(id))
+        return res.status(400).send("Not valid id")
+
     const user = await User.findById(id).lean()
     if (!user)
         return res.status(400).send("This user isn't exists")
@@ -64,13 +68,15 @@ const addUser=async (req,res)=>{
 }
 
 const updateUser = async (req, res) => {////vvvvvvvvvvvvv
-    const { userId, password, fullname, email, phone, street, buildingNumber, city, dateOfBirth, roles, id } = req.body
+    const { userId, password, fullname, email, phone, street, buildingNumber, city, birthDate, roles, id } = req.body
     if (!id)
         return res.status(400).send("Id is required")
     const users = await User.find().lean()
     if (!users?.length) {
         return res.status(404).json({ message: 'No users found' })
     }
+    if (!mongoose.Types.ObjectId.isValid(id))
+        return res.status(400).send("Not valid id")
     const user = await User.findById(id).exec()
 
     if (!user)
@@ -97,8 +103,8 @@ const updateUser = async (req, res) => {////vvvvvvvvvvvvv
         user.address.city = city
     if (buildingNumber)
         user.address.buildingNumber = buildingNumber
-    if (dateOfBirth)
-        user.dateOfBirth = dateOfBirth
+    if (birthDate)
+        user.birthDate = birthDate
     if (roles) {
         if (roles !== 'Donor' && roles !== 'Admin' && roles !== 'Student')
             return res.status(400).send("roles must be User or Donor or Admin!!")
@@ -118,6 +124,8 @@ const deleteUserById = async (req, res) => {//vvvvvvvvvvvvvvv
     if (!users?.length) {
         return res.status(404).json({ message: 'No users found' })
     }
+    if (!mongoose.Types.ObjectId.isValid(id))
+        return res.status(400).send("Not valid id")
     const user = await User.findById(id).exec()
     if (!user)
         return res.status(400).send("user is not exists")

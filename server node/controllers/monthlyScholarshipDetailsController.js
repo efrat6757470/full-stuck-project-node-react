@@ -1,4 +1,5 @@
 const MonthlyScholarshipDetails=require("../models/Monthly_scholarship_details")
+const mongoose = require("mongoose")
 
 const addMonthlyScholarshipDetails=async(req,res)=>{//vvvvvvvvvv
     const {sumPerHour,MaximumNumberOfHours,date}=req.body
@@ -19,6 +20,8 @@ const getMonthlyScholarshipDetailsById=async (req,res)=>{//vvvvvvvvvvvvvvv
     const {id}=req.params
     if(!id)
         return res.status(400).send("Id is required")
+    if (!mongoose.Types.ObjectId.isValid(id))
+        return res.status(400).send("Not valid id")
     const allMonthlyScholarshipDetails= await MonthlyScholarshipDetails.find().lean()
     if(!allMonthlyScholarshipDetails?.length)
         return res.status(404).send("No monthlyScholarshipDetails exists")
@@ -32,6 +35,8 @@ const updateMonthlyScholarshipDetails=async(req,res)=>{//vvvvvvvvvvvvvvvvv
     const {id,sumPerHour,MaximumNumberOfHours,date}=req.body
     if(!id)
         return res.status(400).send("Id is required")
+    if (!mongoose.Types.ObjectId.isValid(id))
+        return res.status(400).send("Not valid id")
     const monthlyScholarshipDetails=await MonthlyScholarshipDetails.findById(id).exec()
     if(!monthlyScholarshipDetails)
         return res.status(400).send("monthlyScholarshipDetails is not exists")
@@ -48,6 +53,8 @@ const deleteMonthlyScholarshipDetails = async (req, res) => {//vvvvvvvvvv
     const { id } = req.params
     if (!id)
         return res.status(400).send("Id is required")
+    if (!mongoose.Types.ObjectId.isValid(id))
+        return res.status(400).send("Not valid id")
     const msd = await MonthlyScholarshipDetails.findById(id).exec()
     if (!msd)
         return res.status(400).send("MonthlyScholarshipDetails is not exists")

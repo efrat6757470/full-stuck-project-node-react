@@ -18,6 +18,8 @@ import { useRef } from 'react';
 import { Toolbar } from 'primereact/toolbar';
 import { useForm, Controller } from 'react-hook-form';
 import UserForm from './userForm';
+import { format } from 'date-fns';
+
 
 export default function Students() {
 
@@ -112,9 +114,12 @@ export default function Students() {
 
 
     const handleDelete = async (rowData) => {
-            const res = await axios.delete(`http://localhost:1111/api/user/${rowData._id}`)
-            console.log(res);
-            getStudents();
+        const res = await axios.delete(`http://localhost:1111/api/user/${rowData._id}`
+            ,
+            { headers: { Authorization: `Bearer ${token}` } }
+        )
+        console.log(res);
+        getStudents();
     };
 
 
@@ -142,7 +147,7 @@ export default function Students() {
     const hideDeleteStudentsDialog = () => {
         setDeleteStudentDialog(false);
     };
-    
+
     const openNew = (rowdata) => {
 
         setAdd(true)
@@ -157,7 +162,12 @@ export default function Students() {
     // };
     const addressBodyTemplate = (rowData) => {
         const { street, city, buildingNumber } = rowData.address || {};
-        return [street,  buildingNumber, city].filter(Boolean).join(' ');
+        return [street, buildingNumber, city].filter(Boolean).join(' ');
+    };
+    const birthDateBodyTemplate = (rowData) => {
+        if (rowData.birthDate)
+            return format(rowData.birthDate, 'dd/MM/yyyy')
+        return ""
     };
     const leftToolbarTemplate = () => {
         return (
@@ -183,7 +193,7 @@ export default function Students() {
                 <Column field="email" header="Email" style={{ width: '10%' }}></Column>
                 <Column field="phone" header="Phone" style={{ width: '10%' }}></Column>
                 <Column field="address" header="Address" body={addressBodyTemplate} style={{ width: '10%' }}></Column>
-                <Column field="birthDate" header="BirthDate" style={{ width: '30%' }}></Column>
+                <Column field="birthDate" header="BirthDate" body={birthDateBodyTemplate} style={{ width: '30%' }}></Column>
                 <Column field="roles" header="Role" body={roleBodyTemplate} style={{ width: '10%' }}></Column>
                 <Column body={actionBodyTemplate} exportable={false} style={{ minWidth: '12rem' }}></Column>
 

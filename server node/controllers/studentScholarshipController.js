@@ -1,5 +1,7 @@
 const StudentScholarship = require("../models/Student_Scholarship")
 const User = require("../models/User")
+const mongoose = require("mongoose")
+
 const getAllStudentScholarships = async (req, res) => {//vvvvvvvvvvvv
     const studentScholarships = await StudentScholarship.find().lean()
     if (!studentScholarships?.length) {
@@ -14,6 +16,8 @@ const getStudentScholarshipById = async (req, res) => {//vvvvvvvvvvv
         return res.status(404).send("No studentScholarships exists")
     if (!id)
         return res.status(400).send("Id is required")
+    if (!mongoose.Types.ObjectId.isValid(id))
+        return res.status(400).send("Not valid id")
     const studentScholarship = await StudentScholarship.findById(id).lean()
     if (!studentScholarship)
         return res.status(400).send("This studentScholarship isn't exists")
@@ -37,7 +41,8 @@ const updateStudentScholarship = async (req, res) => {//vvvvvvvvvvvvvvvv
     const allStudentScholarship=await StudentScholarship.find()
     if(!allStudentScholarship)
         return res.status(404).send(" There is no studentScholarships !!")
-
+    if (!mongoose.Types.ObjectId.isValid(id))
+        return res.status(400).send("Not valid id")
     const studentScholarship = await StudentScholarship.findById(id).exec()
     if (!studentScholarship)
         return res.status(400).send("studentScholarship is not exist!!")
@@ -65,6 +70,8 @@ const deleteStudentScholarship=async(req,res)=>{//vvvvvvvvvvvvvvvvvvvv
     const {id}=req.params
     if(!id)
         return res.status(400).send("Id is required")
+    if (!mongoose.Types.ObjectId.isValid(id))
+        return res.status(400).send("Not valid id")
     const studentScholarship=await StudentScholarship.findById(id).exec()
     if(!studentScholarship)
         return res.status(400).send("studentScholarship is not exists")

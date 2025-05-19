@@ -1,4 +1,6 @@
 //vvvvvvvvvvvvv
+const mongoose = require("mongoose")
+
 const Contribution=require("../models/Contribution")
 const User=require("../models/User")
 const addContrbution=async(req,res)=>{///////////vvvvvvvvv
@@ -27,7 +29,8 @@ const getContrbutionById = async (req, res) => {//vvvvvvvvv
     console.log(id);
     if (!id)
         return res.status(400).send("Id is required")
-    
+    if (!mongoose.Types.ObjectId.isValid(id))
+        return res.status(400).send("Not valid id")
     const allContributions = await Contribution.find().lean()
     if (!allContributions?.length)
         return res.status(404).send("No contribution exists")
@@ -41,6 +44,8 @@ const updateContribution=async(req,res)=>{/////////vvvvvvvvvvvvvvv
     const {id,donor,date,sumContribution}=req.body
     if(!id)
         return res.status(400).send("Id is required")
+    if (!mongoose.Types.ObjectId.isValid(id))
+        return res.status(400).send("Not valid id")
     const contribution = await Contribution.findById(id).exec()
     if (!contribution)
         return res.status(400).send("contribution is not exists")
@@ -57,6 +62,8 @@ const deleteContribution = async (req, res) => {//vvvvvvvvvvvvvvvvvvvv
     const { id } = req.params
     if (!id) 
         return res.status(400).send("Id is required")
+    if (!mongoose.Types.ObjectId.isValid(id))
+        return res.status(400).send("Not valid id")
     const contribution = await Contribution.findById(id).exec()
     if (!contribution)
         return res.status(400).send("Contribution is not exists")

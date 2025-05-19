@@ -38,7 +38,8 @@ const Nav=()=>{
             command: () => {
                 navigate('./showMSDetails')
             }
-        }]
+        }
+        ]
     return(
         <>
          <Menubar  model={items} />

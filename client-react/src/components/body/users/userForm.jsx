@@ -6,7 +6,7 @@ import { Dialog } from 'primereact/dialog';
 import { classNames } from 'primereact/utils';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
-
+import { Calendar } from 'primereact/calendar';
 const UserForm = ({ studentDialog, setStudentDialog, getStudents, student, setAdd, setStudent, updateTheUser }) => {
     const [showMessage, setShowMessage] = useState(false);
     const [showMessageError, setShowMessageError] = useState(false);
@@ -20,14 +20,16 @@ const UserForm = ({ studentDialog, setStudentDialog, getStudents, student, setAd
         email: student?.email,
         city: student?.address?.city || "",
         street: student?.address?.street || "",
-        buildingNumber: student?.address?.buildingNumber || "",        birthDate: student?.birthDate,
+        buildingNumber: student?.address?.buildingNumber || "", 
         roles: student?.roles,
-        userId: student?.userId
+        userId: student?.userId,
+        birthDate: student?.birthDate
     }
     const { control, formState: { errors }, handleSubmit, reset } = useForm({ defaultValues });
 
     const onSubmit = async (data) => {
-        //console.log(student);
+        console.log("lllll");
+        console.log(data);
         data = { ...data, roles: "Student" }
         if (student) {
             //console.log(data);
@@ -127,6 +129,28 @@ const UserForm = ({ studentDialog, setStudentDialog, getStudents, student, setAd
                                 <label htmlFor="phone" className={classNames({ 'p-error': errors.name })}>Phone</label>
                             </span>
                         </div>
+                        <div className="field">
+                            <span className="p-float-label">
+                                <Controller
+                                    name="birthDate"
+                                    control={control}
+                                    render={({ field, fieldState }) => (
+                                        <Calendar
+                                            id={field.birthDate}
+                                            value={field.value}
+                                            onChange={(e) => field.onChange(e.value)}
+                                            dateFormat="dd/mm/yy" // אפשר לשנות לפורמט אחר
+                                            className={classNames({ 'p-invalid': fieldState.invalid })}
+                                            showIcon // מציג אייקון של לוח שנה
+                                        />
+                                    )}
+                                />
+                                <label htmlFor="birthDate" className={classNames({ 'p-error': errors.birthDate })}>
+                                    Birth Date
+                                </label>
+                            </span>
+                        </div>
+
                         <div>address:</div>
                         <br></br>
                         <div className="field">

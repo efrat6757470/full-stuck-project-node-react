@@ -1,4 +1,5 @@
 const CashRegisterStatus = require("../models/Cash_Register_Status")
+const mongoose = require("mongoose")
 
 const getAllCashRegisterStatus = async (req, res) => {//vvvvvvvvvvvvvvvvvv
     const cashregistersatuses = await CashRegisterStatus.find().lean()
@@ -13,6 +14,8 @@ const getCashRegisterStatusById = async (req, res) => {//vvvvvvvvvvvv
         return res.status(404).send("No cashregistersatuses exists")
     if (!id)
         return res.status(400).send("Id is required")
+    if (!mongoose.Types.ObjectId.isValid(id))
+        return res.status(400).send("Not valid id")
     const cashregistersatus = await CashRegisterStatus.findById(id).lean()
     if (!cashregistersatus)
         return res.status(400).send("This cashregistersatus isn't exists")
@@ -34,6 +37,8 @@ const updateCashRegisterStatus = async (req, res) => {//vvvvvvvvvvvvvvv
     const { currentSum, sumPerAction, action, id,date } = req.body
     if (!id)
         return res.status(400).send("Id is required")
+    if (!mongoose.Types.ObjectId.isValid(id))
+        return res.status(400).send("Not valid id")
     const cashregistersatuses = await CashRegisterStatus.find().lean()
     if (!cashregistersatuses?.length)
         return res.status(404).send("No cashregistersatuses exists")
@@ -56,6 +61,8 @@ const deleteCashRegisterStatusById = async (req, res) => {//vvvvvvvvvvvv
     const { id } = req.params
     if (!id)
         return res.status(400).send("Id is required")
+    if (!mongoose.Types.ObjectId.isValid(id))
+        return res.status(400).send("Not valid id")
     const cashregistersatuses = await CashRegisterStatus.find().lean()
     if (!cashregistersatuses?.length)
         return res.status(404).send("No cashregistersatuses exists")
