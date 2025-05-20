@@ -12,6 +12,8 @@ import StudentNav from './components/header/StudentNav';
 import Home from './components/body/Home';
 import ShowMSDetails from './components/body/msDetails/ShowMSDetails';
 import StudentDetails from './components/body/users/student/StudentDetails';
+import EnterNumberOfHours from './components/body/users/student/EnterNumberOfHours';
+import NumberOfHoursBtn from './components/body/users/student/NumberOfHoursBtn';
 function App() {
   const { token, role, user } = useSelector((state) => state.token);
 
@@ -25,6 +27,7 @@ function App() {
         <Route path='/logOut' element={<LogOut></LogOut>} />
         <Route path='/students' element={<Students></Students>} />
         <Route path='/studentDetails' element={<StudentDetails></StudentDetails>} />
+        <Route path='/enterNumberOfHours' element={<EnterNumberOfHours></EnterNumberOfHours>} />
         <Route path='/contribution' element={<Contributions></Contributions>} />
         <Route path='/home' element={<Home></Home>}/>
         <Route path='/showMSDetails' element={<ShowMSDetails></ShowMSDetails>}/>
@@ -32,6 +35,10 @@ function App() {
       :role == "Student" ?
       <Routes>
         <Route path='/' element={<Login></Login>} /> 
+        <Route path='/home' element={<Home></Home>}/>
+        <Route path='/enterNumberOfHours' element={<EnterNumberOfHours></EnterNumberOfHours>} />
+        <Route path='/numberOfHoursBtn' element={<NumberOfHoursBtn></NumberOfHoursBtn>} />
+
          <Route path='/login' element={<Login></Login>} />
         <Route path='/logOut' element={<LogOut></LogOut>} />
         <Route path='/studentDetails' element={<StudentDetails></StudentDetails>} />
@@ -39,6 +46,8 @@ function App() {
       :role == "Donor" ?
       <Routes>
       <Route path='/' element={<Login></Login>} /> 
+      <Route path='/home' element={<Home></Home>}/>
+
          <Route path='/login' element={<Login></Login>} />
         <Route path='/logOut' element={<LogOut></LogOut>} />
       <Route path='/contribution' element={<Contributions></Contributions>} />

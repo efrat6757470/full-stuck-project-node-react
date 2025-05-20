@@ -4,10 +4,11 @@ const studentScholarshipController=require("../controllers/studentScholarshipCon
 const verifyJWTAdmin=require("../middleware/verifyJWT_admin")
 const vevifyJWTStudent=require("../middleware/vevifyJWTStudent")
 
-router.post("/",verifyJWTAdmin,studentScholarshipController.addStudentScholarship)
+router.post("/",vevifyJWTStudent,studentScholarshipController.addStudentScholarship)
 router.get("/:id",verifyJWTAdmin, studentScholarshipController.getStudentScholarshipById)
-router.get("/", verifyJWTAdmin,studentScholarshipController.getAllStudentScholarships)
+router.get("/",studentScholarshipController.getAllStudentScholarships)
 router.put("/", vevifyJWTStudent,studentScholarshipController.updateStudentScholarship)
 router.delete("/:id",verifyJWTAdmin, studentScholarshipController.deleteStudentScholarship)
+router.get("/currentMonth/:student",vevifyJWTStudent, studentScholarshipController.getCurrentMonthScholarship);
 
 module.exports = router

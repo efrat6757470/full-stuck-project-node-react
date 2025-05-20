@@ -5,16 +5,14 @@ import UserForm from '../userForm';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
-import { setToken, setUser,setRole } from '../../../../redux/tokenSlice';
+import { setToken, setUser,setRole } from '../../../../redux/tokenSlice'
 import { format } from 'date-fns';
-
-
 export default function StudentDetails() {
-    const { token, role, user } = useSelector((state) => state.token);
     const [student, setStudent] = useState();
     const [studentDialog, setStudentDialog] = useState(false);
     const [editForm, setEditForm] = useState(false);
     const dispatch = useDispatch();
+    const { token, role, user } = useSelector((state) => state.token);
 
     const header = (
         <img alt="Card" src="https://primefaces.org/cdn/primereact/images/usercard.png" />

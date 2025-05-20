@@ -30,6 +30,7 @@ const UserForm = ({ studentDialog, setStudentDialog, getStudents, student, setAd
     const onSubmit = async (data) => {
         console.log("lllll");
         console.log(data);
+        console.log(token);
         data = { ...data, roles: "Student" }
         if (student) {
             //console.log(data);
