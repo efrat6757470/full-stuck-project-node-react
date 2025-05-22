@@ -10,5 +10,6 @@ router.get("/",studentScholarshipController.getAllStudentScholarships)
 router.put("/", vevifyJWTStudent,studentScholarshipController.updateStudentScholarship)
 router.delete("/:id",verifyJWTAdmin, studentScholarshipController.deleteStudentScholarship)
 router.get("/currentMonth/:student",vevifyJWTStudent, studentScholarshipController.getCurrentMonthScholarship);
+router.get("/byStudent/:student",vevifyJWTStudent, studentScholarshipController.getStudentScholarshipByStudent);
 
 module.exports = router

@@ -23,6 +23,19 @@ const getStudentScholarshipById = async (req, res) => {//vvvvvvvvvvv
         return res.status(400).send("This studentScholarship isn't exists")
     res.json(studentScholarship)
 }
+const getStudentScholarshipByStudent = async (req, res) => {//vvvvvvvvvvv
+    const { student } = req.params
+    const studentScholarships = await StudentScholarship.find().lean()
+    if (!studentScholarships?.length)
+        return res.status(404).send("No studentScholarships exists")
+    if (!student)
+        return res.status(400).send("student is required")
+    
+    const studentScholarship = await StudentScholarship.find({student}).lean()
+    if (!studentScholarship)
+        return res.status(400).send("This studentScholarship isn't exists")
+    res.json(studentScholarship)
+} 
 const getCurrentMonthScholarship = async (req, res) => {
     try {
         const { student } = req.params; // studentId מגיע מה-URL
@@ -46,7 +59,8 @@ const getCurrentMonthScholarship = async (req, res) => {
     } catch (err) {
         res.status(500).json({ message: "שגיאה בשרת", error: err.message });
     }
-};
+}
+
 const addStudentScholarship = async (req, res) => {//vvvvvvvvvvvvvv
     const { sumMoney, numHours, date, student } = req.body
     if ( !numHours || !date || !student)
@@ -104,4 +118,4 @@ const deleteStudentScholarship=async(req,res)=>{//vvvvvvvvvvvvvvvvvvvv
     const result=await studentScholarship.deleteOne()
     res.send(result)
 }
-module.exports={addStudentScholarship,getAllStudentScholarships,getStudentScholarshipById,updateStudentScholarship,deleteStudentScholarship ,getCurrentMonthScholarship}
+module.exports={addStudentScholarship,getAllStudentScholarships,getStudentScholarshipById,updateStudentScholarship,getStudentScholarshipByStudent,deleteStudentScholarship ,getCurrentMonthScholarship}

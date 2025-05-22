@@ -14,10 +14,11 @@ const login = async (req, res) => {
     // }
     const foundUser = await User.findOne({ userId }).lean()
 
-    if (!foundUser || !foundUser.active) {
+    if (!foundUser ) {
         return res.status(401).json({ message: 'Unauthorized' })
     }
      const match = await bcrypt.compare(password, foundUser.password)///////////vvvvvvvvvvv
+console.log(foundUser,"foundUser");
 
     if (!match)
         return res.status(401).json({ message: 'Unauthorized' })
@@ -32,7 +33,7 @@ const login = async (req, res) => {
 }
 
 const register = async (req, res) => {////vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
-    console.log("hdiohf;sh");
+    //console.log("hdiohf;sh");
     const { userId, password, fullname, email, phone, address, birthDate, active, roles } = req.body
     if (!userId || !password || !fullname || !roles) {
         return res.status(400).json({ message: 'userId, roles, password and fullname are required' })

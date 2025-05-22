@@ -20,11 +20,11 @@ export default function StudentDetails() {
     const showEditForm = () => {
         setStudent(user)
         setEditForm(true)
-
+console.log();
     };
     const footer = (
         <>
-            <Button label="update" icon="pi pi-check" onClick={() => showEditForm()} />
+            <Button label="update" icon="pi pi-pencil" onClick={() => showEditForm()} />
         </>
     );
    
@@ -41,7 +41,11 @@ export default function StudentDetails() {
 
         }
     };
-   
+    const formattedDate =
+    user.birthDate && !isNaN(user.birthDate)
+      ? format(user.birthDate, 'dd/MM/yyyy')
+      : ' ';
+
     return (
         <div className="card flex justify-content-center">
             <Card title={user.fullname} footer={footer} header={header} className="md:w-25rem">
@@ -52,10 +56,10 @@ export default function StudentDetails() {
                     <p>phone: {user.phone}</p>
                     <p>address: </p>
                     
-                    <p>street: {user.address.street}</p>
-                    <p>building number: {user.address.buildingNumber}</p>
-                    <p>city: {user.address.city}</p>
-                    <p>birthDate: {format(user.birthDate, 'dd/MM/yyyy')}</p>
+                    <p>street: {user.address?.street}</p>
+                    <p>building number: {user.address?.buildingNumber}</p>
+                    <p>city: {user.address?.city}</p>
+                    <p>birthDate: {formattedDate}</p>
 
                 </p>
             </Card>

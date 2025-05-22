@@ -22,16 +22,37 @@ const getCashRegisterStatusById = async (req, res) => {//vvvvvvvvvvvv
     res.json(cashregistersatus)
 }
 
+
 const addCashRegisterStatus = async (req, res) => {//vvvvvvvvvvvvvvvvvvvvv
-    const { action, sumPerAction ,currentSum,date} = req.body
-    if (!action||!sumPerAction||!currentSum||!date)//currentSum האם נכון לדרוש שליחה של
+    const { action, sumPerAction ,date} = req.body
+    if (!action||!sumPerAction||!date)//currentSum האם נכון לדרוש שליחה של
         return res.status(400).send("All fields are required!!")
      if(action!=='Income'&&action!=='Expense')
         return res.status(400).send("action must be Income or Expense!!")
+     const cashregistersatuses = await CashRegisterStatus.find().lean()
+     if (!cashregistersatuses?.length) {
+         let sum=0;
+         if (action === "Income")
+            sum= Number(sumPerAction)
+         else
+             sum = - Number(sumPerAction)
+         const cashregistersatus = await CashRegisterStatus.create({ currentSum: sum, sumPerAction, action, date })
+         res.json(cashregistersatus)
+ 
+     }
+     else {
+         let sum = cashregistersatuses[cashregistersatuses.length - 1].currentSum
+         if (action === "Income")
+             sum += Number(sumPerAction)
+ 
+         else
+             sum -= Number(sumPerAction)
+         const cashregistersatus = await CashRegisterStatus.create({ currentSum: sum, sumPerAction, action, date })
+         res.json(cashregistersatus)
+     }
 
+    
 
-    const cashregistersatus = await CashRegisterStatus.create({ currentSum, sumPerAction, action,date })
-    res.json(cashregistersatus)
 }
 const updateCashRegisterStatus = async (req, res) => {//vvvvvvvvvvvvvvv
     const { currentSum, sumPerAction, action, id,date } = req.body

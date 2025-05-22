@@ -14,6 +14,9 @@ import ShowMSDetails from './components/body/msDetails/ShowMSDetails';
 import StudentDetails from './components/body/users/student/StudentDetails';
 import EnterNumberOfHours from './components/body/users/student/EnterNumberOfHours';
 import NumberOfHoursBtn from './components/body/users/student/NumberOfHoursBtn';
+import CRStatus from './components/body/crStatus/CRStatus'
+import StudentScholarship from './components/body/studentScholarship/StudentScholarship';
+import ScholarshipForStudent from './components/body/users/student/ScholarshipForStudent';
 function App() {
   const { token, role, user } = useSelector((state) => state.token);
 
@@ -31,6 +34,10 @@ function App() {
         <Route path='/contribution' element={<Contributions></Contributions>} />
         <Route path='/home' element={<Home></Home>}/>
         <Route path='/showMSDetails' element={<ShowMSDetails></ShowMSDetails>}/>
+        <Route path='/cRStatus' element={<CRStatus></CRStatus>}/>
+        <Route path='/studentScholarship' element={<StudentScholarship></StudentScholarship>}/>
+
+
       </Routes>
       :role == "Student" ?
       <Routes>
@@ -38,6 +45,7 @@ function App() {
         <Route path='/home' element={<Home></Home>}/>
         <Route path='/enterNumberOfHours' element={<EnterNumberOfHours></EnterNumberOfHours>} />
         <Route path='/numberOfHoursBtn' element={<NumberOfHoursBtn></NumberOfHoursBtn>} />
+        <Route path='/scholarshipForStudent' element={<ScholarshipForStudent></ScholarshipForStudent>} />
 
          <Route path='/login' element={<Login></Login>} />
         <Route path='/logOut' element={<LogOut></LogOut>} />

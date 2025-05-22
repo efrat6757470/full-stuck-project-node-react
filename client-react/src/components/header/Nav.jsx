@@ -26,6 +26,20 @@ const Nav=()=>{
             }
         },
         {
+            label: 'CRStatus',
+            icon: 'pi pi-user',
+            command: () => {
+                navigate('./cRStatus')
+            }
+        },
+        {
+            label: 'Student Scholarsip',
+            icon: 'pi pi-user',
+            command: () => {
+                navigate('./studentScholarship')
+            }
+        },
+        {
             label: 'Contribution',
             icon: 'pi pi-user',
             command: () => {
