@@ -11,7 +11,7 @@ import StudentDetails from './users/student/StudentDetails';
          {role === "Admin" ?<></>: role === "Student" ?
          <>
          <StudentDetails></StudentDetails>
-         <NumberOfHoursBtn></NumberOfHoursBtn></>: <></>}
+        </>: <></>}
         </>
     )
 }

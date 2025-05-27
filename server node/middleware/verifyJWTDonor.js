@@ -9,7 +9,7 @@ const verifyJWTDonor=(req,res,next)=>{
         token,
         process.env.ACCESS_TOKEN_SECRET,
         (err,decode)=>{
-            if (err||decode.role!=="Admin"||decode.role!=="Donor") return res.status(403).json({ message:
+            if (err||(decode.role!=="Admin"&&decode.role!=="Donor")) return res.status(403).json({ message:
                 'Forbidden' })
             req.user=decode
             console.log(req.user);

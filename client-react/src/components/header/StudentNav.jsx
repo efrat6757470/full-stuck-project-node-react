@@ -26,20 +26,6 @@ const StudentNav=()=>{
                 navigate('./scholarshipForStudent')
             }
         },
-        // {
-        //     label: 'EnterNumberOfHours',
-        //     icon: 'pi pi-user',
-        //     command: () => {
-        //         navigate('./enterNumberOfHours')
-        //     }
-        // },
-        // {
-        //     label: 'NumberOfHoursBtn',
-        //     icon: 'pi pi-user',
-        //     command: () => {
-        //         navigate('./numberOfHoursBtn')
-        //     }
-        // },
         {
             label: 'Home',
             icon: 'pi pi-user',

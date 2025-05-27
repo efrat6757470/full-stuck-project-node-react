@@ -18,13 +18,13 @@ const Nav=()=>{
             }
         },
         
-        {
-            label: 'Students',
-            icon: 'pi pi-user',
-            command: () => {
-                navigate('./students')
-            }
-        },
+        // {
+        //     label: 'Students',
+        //     icon: 'pi pi-user',
+        //     command: () => {
+        //         navigate('./students')
+        //     }
+        // },
         {
             label: 'CRStatus',
             icon: 'pi pi-user',
@@ -33,12 +33,26 @@ const Nav=()=>{
             }
         },
         {
-            label: 'Student Scholarsip',
+            label: 'Student Scholarsips',
             icon: 'pi pi-user',
             command: () => {
-                navigate('./studentScholarship')
+                navigate('./studentScholarships')
             }
         },
+        {
+            label: 'Users',
+            icon: 'pi pi-user',
+            command: () => {
+                navigate('./users')
+            }
+        },
+        // {
+        //     label: 'Show Contributions',
+        //     icon: 'pi pi-user',
+        //     command: () => {
+        //         navigate('./showContributions')
+        //     }
+        // },
         {
             label: 'Contribution',
             icon: 'pi pi-user',

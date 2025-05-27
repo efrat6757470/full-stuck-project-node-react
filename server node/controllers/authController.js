@@ -39,7 +39,7 @@ const register = async (req, res) => {////vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
         return res.status(400).json({ message: 'userId, roles, password and fullname are required' })
     }
     const duplicate = await User.findOne({ userId }).lean()
-    if (duplicate) {
+    if (duplicate&&duplicate.active) {
         return res.status(409).json({ message: "Duplicate user id" })
     }
     if (roles !== 'Donor' && roles !== 'Admin' && roles !== 'Student')

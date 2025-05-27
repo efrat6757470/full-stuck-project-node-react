@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';///diti
+import React, { useEffect, useState } from 'react';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { InputText } from 'primereact/inputtext';
@@ -37,27 +37,20 @@ export default function Users() {
     const { token, role } = useSelector((state) => state.token);
     const toast = useRef(null);
     const dt = useRef(null);
-    // let defaultValues = {
-    //     id: null,
-    //     fullname: student?.fullname,
-    //     phone: null,
-    //     email: '',
-    //     city: student?.address?.city || "",
-    //     street: student?.address?.street || "",
-    //     buildingNumber: student?.address?.buildingNumber || "",
-    //     birthDate: '',
-    //     roles: '',
-    //     userId: ''
-    // };
+    
     const [selectedRole, setSelectedRole] = useState("All");
     const [filteredUsers, setFilterdUsers] = useState(null)
 
     const getUsers = async () => {
+        try{
         const res = await axios.get("http://localhost:1111/api/user",
-            { headers: { Authorization: `Bearer ${token}` } })
+            { headers: { Authorization: `Bearer ${token}` } })}
+            catch (err) {
+                console.error(err);
+            }
         setUsers(res.data)
         console.log(users);
-        
+
         setSelectedRole(selectedRole)
     }
     useEffect(() => {
@@ -70,14 +63,14 @@ export default function Users() {
         if (selectedRole && selectedRole === "All")
             setFilterdUsers(users)
         else if (selectedRole && selectedRole === "Admin")
-            setFilterdUsers(users.filter(u => u.role === selectedRole))
+            setFilterdUsers(users.filter(u => u.roles === selectedRole))
         else if (selectedRole && selectedRole === "Donor")
-            setFilterdUsers(users.filter(u => u.role === selectedRole))
+            setFilterdUsers(users.filter(u => u.roles === selectedRole))
         else if (selectedRole && selectedRole === "Student")
-            setFilterdUsers(users.filter(u => u.role === selectedRole))
+            setFilterdUsers(users.filter(u => u.roles === selectedRole))
         else
             setFilterdUsers(users)
-    }, [users,selectedRole]);
+    }, [users, selectedRole]);
 
 
     const onRowEditComplete = (e) => {
@@ -86,47 +79,29 @@ export default function Users() {
         _users[index] = newData;
         setUsers(_users);
     };
-    // const dateEditor = (options) => {
-    //     //const [date, setDate] = useState(options.value);
-    //     console.log(options.value);
-    //     // const dateValue = options.value ? new Date(options.value) : null;
+    
 
-    //     return (<div className="card flex justify-content-center">//
-    //         <Calendar value={options.value}  //dateFormat="dd/mm/yy" 
-    //             onChange={(e) => options.editorCallback(e.value.toLocaleDateString())} />
-    //     </div>
-    //         //<InputText type="text" value={options.value} onChange={(e) => options.editorCallback(e.target.value)} />;
-    //     )
-    // };
-    // const textEditor = (options) => {
-    //     return <InputText type="text" value={options.value} onChange={(e) => options.editorCallback(e.target.value)} />;
-    // };
+    const getRoleTagClass = (roles) => {
+        switch (roles) {
+            case 'Admin':
+                return { backgroundColor: '#B3E5FC', color: '#01579B' }; 
+            case 'Donor':
+                return {  backgroundColor: '#FFF8E1', color: '#222' };   
+            case 'Student':
+                return {background: '#A8E6CF', color: '#1a4d1a'};   
+            default:
+                return {};
+        }
+    };
 
 
-    // const roleEditor = (options) => {
-    //     return (
-    //         <Dropdown
-    //             value={options.value}
-    //             options={roles}
-    //             onChange={(e) => options.editorCallback(e.value)}
-    //             placeholder="Select a Role"
-    //             itemTemplate={(option) => {
-    //                 return <Tag value={option}
-    //                 ></Tag>;
-    //             }}
-    //         />
-    //     );
-    // };
 
     const roleBodyTemplate = (rowData) => {
-        return <Tag value={rowData.role} ></Tag>;
+        return (
+            <Tag value={rowData.roles} style={getRoleTagClass(rowData.roles)} />
+        );
     };
-
-    const handleDelete = async (rowData) => {
-        const res = await axios.delete(`http://localhost:1111/api/user/${rowData._id}`,
-            { headers: { Authorization: `Bearer ${token}` } })
-        getUsers();
-    };
+  
 
     const editUser = (user) => {
         setUser(user);
@@ -140,13 +115,16 @@ export default function Users() {
     const confirmDeleteUser = async (user) => {
         if (window.confirm("Are you sure you want to delete this record?")) {
             {
-                const res = await axios.delete(`http://localhost:1111/api/user/${user._id}`,
-                    { headers: { Authorization: `Bearer ${token}` } });
+                try{
+                const res = await axios.put(`http://localhost:1111/api/user/${user._id}`,
+                    { headers: { Authorization: `Bearer ${token}` } });}
+                    catch (err) {
+                        console.error(err);
+                    }
                 getUsers();
             }
         }
-        // setUser(student);
-        // setDeleteStudentDialog(true);
+        
     };
     const actionBodyTemplate = (rowData) => {
         return (
@@ -169,11 +147,10 @@ export default function Users() {
     const exportCSV = () => {
         dt.current.exportCSV();
     };
-    // const confirmDeleteSelected = () => {
-    //     setDeleteStudentDialog(true);
-    // };
+   
     const addressBodyTemplate = (rowData) => {
         const { street, city, buildingNumber } = rowData.address || {};
+       console.log( rowData.address);
         return [street, buildingNumber, city].filter(Boolean).join(' ');
     };
     const birthDateBodyTemplate = (rowData) => {
@@ -186,7 +163,7 @@ export default function Users() {
             <div className="flex flex-wrap gap-2">
                 <Button label="New" icon="pi pi-plus" severity="success" onClick={openNew} />
                 <Dropdown
-                placeholder={selectedRole}
+                    placeholder={selectedRole}
                     value={selectedRole}
                     options={[{ label: "All", value: null }, ...roles.map(r => ({ label: r, value: r }))]}
                     onChange={e => setSelectedRole(e.value)}
@@ -198,7 +175,7 @@ export default function Users() {
     };
 
     const rightToolbarTemplate = () => {
-          return  <Button label="Export" icon="pi pi-download" iconPos="right" className="p-button-help" onClick={exportCSV} />
+        return <Button label="Export" icon="pi pi-download" iconPos="right" className="p-button-help" onClick={exportCSV} />
     };
     return (
 
@@ -214,24 +191,14 @@ export default function Users() {
                 <Column field="phone" header="Phone" style={{ width: '10%' }}></Column>
                 <Column field="address" header="Address" body={addressBodyTemplate} style={{ width: '10%' }}></Column>
                 <Column field="birthDate" header="BirthDate" body={birthDateBodyTemplate} style={{ width: '30%' }}></Column>
-                <Column field="role" header="Role" body={roleBodyTemplate} style={{ width: '10%' }}></Column>
+                <Column field="roles" header="Role" body={roleBodyTemplate} ></Column>
                 <Column body={actionBodyTemplate} exportable={false} style={{ minWidth: '12rem' }}></Column>
             </DataTable>
 
-            <Dialog visible={deleteUserDialog} style={{ width: '450px' }} header="Confirm" modal footer={
-                <React.Fragment>
-                    <Button label="No" icon="pi pi-times" className="p-button-text" onClick={hideDeleteUsersDialog} />
-                    <Button label="Yes" icon="pi pi-check" className="p-button-text" onClick={() => { handleDelete(user); hideDeleteUsersDialog(); }} />
-                </React.Fragment>
-            } onHide={hideDeleteUsersDialog}>
-                {/* <div className="confirmation-content">
-                    <i className="pi pi-exclamation-triangle" style={{ fontSize: '2rem' }} />
-                    {user && (<span>Are you sure you want to delete <b>{user.fullname}</b>?</span>)}
-                </div> */}
-            </Dialog>
+         
 
-            {user ? <UserForm setStudent={setUser} student={user} setStudentDialog={setUserDialog} getStudents={getUsers} studentDialog={userDialog}></UserForm> : <></>}
-            {add ? <UserForm setStudentDialog={setUserDialog} getStudents={getUsers} studentDialog={userDialog} setAdd={setAdd} ></UserForm> : <></>}
+            {user ? <UserForm setUser={setUser} user={user} setUserDialog={setUserDialog} getUsers={getUsers} userDialog={userDialog}></UserForm> : <></>}
+            {add ? <UserForm setUserDialog={setUserDialog} getUsers={getUsers} userDialog={userDialog} setAdd={setAdd} ></UserForm> : <></>}
 
         </div>
     );

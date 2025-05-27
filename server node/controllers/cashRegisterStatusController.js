@@ -16,7 +16,7 @@ const getCashRegisterStatusById = async (req, res) => {//vvvvvvvvvvvv
         return res.status(400).send("Id is required")
     if (!mongoose.Types.ObjectId.isValid(id))
         return res.status(400).send("Not valid id")
-    const cashregistersatus = await CashRegisterStatus.findById(id).lean()
+    const cashregistersatus = await CashRegisterStatus.findById(_id).lean()
     if (!cashregistersatus)
         return res.status(400).send("This cashregistersatus isn't exists")
     res.json(cashregistersatus)
@@ -55,17 +55,20 @@ const addCashRegisterStatus = async (req, res) => {//vvvvvvvvvvvvvvvvvvvvv
 
 }
 const updateCashRegisterStatus = async (req, res) => {//vvvvvvvvvvvvvvv
-    const { currentSum, sumPerAction, action, id,date } = req.body
-    if (!id)
+    const { currentSum, sumPerAction, action, _id,date } = req.body
+    if (!_id)
         return res.status(400).send("Id is required")
-    if (!mongoose.Types.ObjectId.isValid(id))
+    if (!mongoose.Types.ObjectId.isValid(_id))
         return res.status(400).send("Not valid id")
     const cashregistersatuses = await CashRegisterStatus.find().lean()
     if (!cashregistersatuses?.length)
         return res.status(404).send("No cashregistersatuses exists")
-    const cashregistersatus = await CashRegisterStatus.findById(id).exec()
+    const cashregistersatus = await CashRegisterStatus.findById(_id).exec()
     if (!cashregistersatus)
         return res.status(400).send("cashregistersatus is not exists")
+    if(new Date().getMonth()!==new Date(date).getMonth())
+        return res.status(403).send("cannot update an old action")
+
     if (currentSum)
         cashregistersatus.currentSum = currentSum
     if (sumPerAction)
@@ -90,6 +93,9 @@ const deleteCashRegisterStatusById = async (req, res) => {//vvvvvvvvvvvv
     const cashregistersatus = await CashRegisterStatus.findById(id).exec()
     if (!cashregistersatus)
         return res.status(400).send("cashregistersatus is not exists")
+    console.log(cashregistersatus,"cash");
+    if(new Date().getMonth()!==new Date(cashregistersatus.date).getMonth())
+        return res.status(403).send("cannot delete an old action")
     const result = await cashregistersatus.deleteOne()
     res.send(result)
 }

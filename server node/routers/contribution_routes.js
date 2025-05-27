@@ -10,5 +10,8 @@ router.get("/", verifyJWTAdmin,contributionController.getAllContrbutions)
 router.get("/:id",verifyJWTAdmin,contributionController.getContrbutionById)
 router.put("/",verifyJWTDonor,contributionController.updateContribution)
 router.delete("/:id",verifyJWTDonor,contributionController.deleteContribution)
- 
+router.post("/donor/:id",verifyJWTDonor,contributionController.addContrbutionByDonorId)
+router.put("/donor/:id",verifyJWTDonor,contributionController.updateContributionByDonorId)
+router.get("/donor/:id",verifyJWTDonor,contributionController.getContrbutionByDonorId)
+
 module.exports=router

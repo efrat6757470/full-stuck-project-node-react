@@ -10,7 +10,7 @@ router.get("/student",userConroller.getAllStudents)
 
 router.get("/:id",userConroller.getUserById)
 router.put("/",userConroller.updateUser)
-router.delete("/:id",userConroller.deleteUserById)
+router.put("/:id",userConroller.deleteUserById)
 router.post("/",userConroller.addUser)
 
 // router.get("/",verifyJWTAdmin,userConroller.getAllUsers)

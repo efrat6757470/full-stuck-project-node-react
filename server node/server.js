@@ -21,6 +21,25 @@ app.use("/api/cashRegisterStatus", require("./routers/cashRegisterStatusRoutes")
 app.use("/api/monthlyScholarshipDetails",require("./routers/monthlyScholarshipDetailsRoutes"))
 app.use("/api/studentScholarship",require("./routers/studentScholarshipRoutes"))
 app.use("/api/user",require("./routers/userRoutes"))
+app.use("/api/happenOnceAMonth",require("./routers/hapenOnceAMonthRoutes"))
+
+// app.use("/api/hapenOnceAMonth",require("./routers/hapenOnceAMonthRoutes"))
+const happenOnceAMonth=require("./controllers/happenOnceAMonthController")
+
+const scheduleMonthlyTask = async () => {
+    const now = new Date();
+    const currentDate = now.getDate();
+    if (currentDate === 1) {
+        await happenOnceAMonth.addMonthlyContributionsToCRS();
+        await happenOnceAMonth.addStudentScholarshipOnceAMonthAndUpdateCRS();
+    }
+};
+
+// This function will run every 24 hours (86400000 milliseconds)
+setInterval(scheduleMonthlyTask, 86400000);
+
+
+
 
 app.get("/",(req,res)=>{
     res.send("home")

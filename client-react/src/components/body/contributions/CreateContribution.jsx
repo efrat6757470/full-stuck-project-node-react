@@ -1,59 +1,148 @@
-import { Button } from "primereact/button";
-import { Dialog } from "primereact/dialog";
-import { useState } from "react";
-import { InputText } from "primereact/inputtext";
-import React from "react";
-import axios from "axios";
+import React, { useEffect, useState } from 'react';
+import { InputText } from 'primereact/inputtext';
+import { Dropdown } from 'primereact/dropdown';
+import { Button } from 'primereact/button';
+import 'primereact/resources/themes/saga-blue/theme.css';
+import 'primereact/resources/primereact.min.css';
+import 'primeicons/primeicons.css';
+import 'primeflex/primeflex.css';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import PaymentPage from './PaymentPage';
+import { Dialog } from 'primereact/dialog';
+import { useForm } from 'react-hook-form';
 
-const CreateContribution = (props) => {//{setUsers}
-    const [visible, setVisible] = useState(false);
-    const [donor, setDonor] = useState();
-    const [sumContribution, setSumContribution] = useState();
-    const [date, setDate] = useState();
-   
+const CreateContribution = (props) => {
+    const [rate, setRate] = useState(null);
+    const [checkPay, setCheckPay] = useState(false);
+    const { token, role, user } = useSelector((state) => state.token);
+    const [visiblePay, setVisiblePay] = useState(false);
+    const [coinType, setCoinType] = useState(props.contribution?.coinType || '₪');
 
-    const SaveContribution = async (e) => {
-       const res = await axios.post('http://localhost:1111/contribution', { donor, date, sumContribution })
-       props.getAllContributions()//////////////////////////
-        // setUsers(res.data)
-    }
-    return (<>
-        <div className="card flex justify-content-start">
-            <Button label="Add new cont" icon="pi pi-plus" onClick={() => setVisible(true)} />
-            <Dialog
-                visible={visible}
-                modal
-                onHide={() => { if (!visible) return; setVisible(false); }}
-                content={({ hide }) => (
-                    <div className="flex flex-column px-8 py-5 gap-4" style={{ borderRadius: '12px', backgroundImage: 'radial-gradient(circle at left top, var(--primary-400), var(--primary-700))' }}>
-                        <div className="inline-flex flex-column gap-2">
-                            <label htmlFor="donor" className="text-primary-50 font-semibold">
-                                Donor
-                            </label>
-                            <InputText onChange={(e) => { setDonor(e.target.value) }} className="bg-white-alpha-20 border-none p-3 text-primary-50" style={{ required: true }} />
+    const navigate = useNavigate();
 
-                        </div>
-                        <div className="inline-flex flex-column gap-2">
-                            <label htmlFor="sumContribution" className="text-primary-50 font-semibold">
-                            Contribution Sum
-                            </label>
-                            <InputText onChange={(e) => { setSumContribution(e.target.value) }} className="bg-white-alpha-20 border-none p-3 text-primary-50" style={{ required: true }} />
-                        </div>
-                        <div className="inline-flex flex-column gap-2">
-                            <label htmlFor="date" className="text-primary-50 font-semibold">
-                                date
-                            </label>
-                            <InputText onChange={(e) => { setDate(e.target.value) }} className="bg-white-alpha-20 border-none p-3 text-primary-50" style={{ required: true }} />
-                        </div>
-                      
-                        <div className="flex align-items-center gap-2">
-                            {/* <Button label="Save" icon="pi pi-check" onClick={(e) => { SaveTodo(e); hide(e) }} text className="p-3 w-full text-primary-50 border-1 border-white-alpha-30 hover:bg-white-alpha-20"></Button> */}
-                            <Button label="Cancel" icon="pi pi-times" onClick={(e) => hide(e)} text className="p-3 w-full text-primary-50 border-1 border-white-alpha-30 hover:bg-white-alpha-10"></Button>
+    const coinOptions = [
+        { label: '$', value: '$' },
+        { label: '₪', value: '₪' },
+    ];
+
+    const {
+        register,
+        handleSubmit,
+        setValue,
+        formState: { errors },
+        watch,
+        reset,
+    } = useForm({
+        defaultValues: {
+            sumContribution: props.contribution?.sumContribution || 100,
+        }
+    });
+
+    // Sync coinType with react-hook-form (since Dropdown is not a native input)
+    useEffect(() => {
+        setValue('coinType', coinType);
+    }, [coinType, setValue]);
+
+    // Reset form when dialog opens/closes
+    useEffect(() => {
+        if (props.visible) {
+            reset({
+                sumContribution: props.contribution?.sumContribution || 100,
+                coinType: props.contribution?.coinType || '₪'
+            });
+            setCoinType(props.contribution?.coinType || '₪');
+        }
+    }, [props.visible, props.contribution, reset]);
+
+    const onSubmit = async (data) => {
+        // ממלאים את השדות הנדרשים
+        let sum = Number(data.sumContribution);
+        let usedRate = 1;
+
+        // if (data.coinType === '$') {
+        //     try {
+        //         const res = await fetch("https://api.exchangerate.host/latest?base=USD&symbols=ILS");
+        //         const result = await res.json();
+        //         usedRate = result.rates.ILS;
+        //         sum *= usedRate;
+        //         setRate(usedRate);
+        //     } catch (error) {
+        //         console.error("Error fetching exchange rate:", error);
+        //     }
+        // }
+
+        // בונים אובייקט תרומה למשלוח/לתשלום
+        const contributionData = {
+            sumContribution: sum,
+            coinType: data.coinType,
+            donor: user._id,
+            date: new Date(),
+            id: props.contribution?._id || 0,
+        };
+
+        // פותחים תשלום
+        setVisiblePay(true);
+
+        // כאן אפשר לשלוח את contributionData לשרת אם צריך
+    };
+
+    return (
+        <>
+            <Dialog visible={props.visible} onHide={() => props.setVisible(false)}>
+                <form onSubmit={handleSubmit(onSubmit)}>
+                    <div className="card flex justify-content-center">
+                        <div className="p-fluid">
+                            <h2>Enter donation details</h2>
+                            <div className="field">
+                                <label htmlFor="sumContribution">Sum Contribution</label>
+                                <InputText
+                                    id="sumContribution"
+                                    type="number"
+                                    min={1}
+                                    {...register('sumContribution', { required: 'sumContribution is required.' })}
+                                />
+                                {errors.sumContribution && <p style={{ color: 'red' }}>{errors.sumContribution.message}</p>}
+                            </div>
+                            <div className="field">
+                                <label htmlFor="coinType">Currency Type</label>
+                                <Dropdown
+                                    id="coinType"
+                                    value={coinType}
+                                    onChange={(e) => setCoinType(e.value)}
+                                    options={coinOptions}
+                                    placeholder={coinOptions[1].value}
+                                    required
+                                />
+                            </div>
+                            <Button
+                                label="Submit"
+                                icon="pi pi-check"
+                                className="p-button-success"
+                                type="submit"
+                            />
                         </div>
                     </div>
-                )}
-            ></Dialog>
-        </div>
-    </>)
-}
-export default CreateContribution
+                </form>
+            </Dialog>
+            <PaymentPage
+                checkPay={checkPay}
+                formData={{
+                    sumContribution: watch('sumContribution'),
+                    coinType: watch('coinType'),
+                    donor: user?._id,
+                    date: new Date(),
+                    id: props.contribution?._id || 0
+                }}
+                getAllContributions={props.getAllContributions}
+                setVisibleFather={props.setVisible}
+                setCheckPay={setCheckPay}
+                visible={visiblePay}
+                setVisible={setVisiblePay}
+                sumContribution={watch('sumContribution')}
+            />
+        </>
+    );
+};
+
+export default CreateContribution;

@@ -3,7 +3,7 @@ const User = require("../models/User")
 const mongoose = require("mongoose")
 
 const getAllStudentScholarships = async (req, res) => {//vvvvvvvvvvvv
-    const studentScholarships = await StudentScholarship.find().lean()
+    const studentScholarships = await StudentScholarship.find().populate("student",{fullname:1,_id:1,userId:1}).lean()
     if (!studentScholarships?.length) {
         res.json([])    }
     res.json(studentScholarships)
@@ -25,7 +25,7 @@ const getStudentScholarshipById = async (req, res) => {//vvvvvvvvvvv
 }
 const getStudentScholarshipByStudent = async (req, res) => {//vvvvvvvvvvv
     const { student } = req.params
-    const studentScholarships = await StudentScholarship.find().lean()
+    const studentScholarships = await StudentScholarship.find().populate("student",{fullname:1,_id:1,userId:1}).lean()
     if (!studentScholarships?.length)
         return res.status(404).send("No studentScholarships exists")
     if (!student)
