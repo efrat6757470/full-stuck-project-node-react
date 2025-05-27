@@ -3,7 +3,6 @@ import './App.css';
 import { Link, Route, Routes } from 'react-router-dom'
 
 import Nav from './components/header/Nav';
-import Students from './components/body/users/Students';
 import Login from './components/features/auth/login';
 import LogOut from './components/features/auth/logOut';
 import { useDispatch, useSelector } from 'react-redux';

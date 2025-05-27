@@ -44,11 +44,12 @@ export default function Users() {
     const getUsers = async () => {
         try{
         const res = await axios.get("http://localhost:1111/api/user",
-            { headers: { Authorization: `Bearer ${token}` } })}
+            { headers: { Authorization: `Bearer ${token}` } })
+            setUsers(res.data)
+        }
             catch (err) {
                 console.error(err);
             }
-        setUsers(res.data)
         console.log(users);
 
         setSelectedRole(selectedRole)

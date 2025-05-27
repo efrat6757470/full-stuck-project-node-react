@@ -43,7 +43,7 @@ export default function StudentDetails() {
 
             dispatch(setUser(res.data));
         }
-        catch {
+        catch (err){
             console.error(err)
         }
     };

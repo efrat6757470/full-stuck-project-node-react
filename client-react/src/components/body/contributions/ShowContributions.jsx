@@ -18,13 +18,14 @@ const Contributions = () => {
     const [contribution, setContribution] = useState({})
     const getAllContributions = async () => {
         try{
-        const res = await axios.get('http://localhost:1111/api/contribution', { headers: { Authorization: `Bearer ${token}` } })}
+        const res = await axios.get('http://localhost:1111/api/contribution', { headers: { Authorization: `Bearer ${token}` } })
+        setContributions(res.data)
+    }
         catch (err) {
             console.error(err);
         }
         // // const sortedItems = res.data.sort((a, b) => a.id - b.id);
         // // setUsers(sortedItems)
-        setContributions(res.data)
     }
     useEffect(() => {
         getAllContributions()
