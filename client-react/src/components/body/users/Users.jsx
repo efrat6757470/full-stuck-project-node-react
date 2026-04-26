@@ -101,9 +101,12 @@ export default function Users() {
         if (window.confirm("Are you sure you want to delete this record?")) {
             {
                 try {
-                    if (user.image[0]) {
+                    //if (user.image[0]) {
+                    if (user?.image) {
                         await axios.delete('http://localhost:1111/api/user/delete-image', {
-                            data: { url: user.image, _id: user._id }
+                            data: { 
+                                url: Array.isArray(user.image) ? user.image[0] : user.image,
+                                 _id: user._id }
                         },// שים לב - axios צריך data לא body
                             { headers: { "Content-Type": "application/json" } }
                         );

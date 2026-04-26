@@ -107,14 +107,19 @@ const UserForm = ({
 
     const onSubmit = async (data) => {
         try {
-            data.image = selectedImage
+            
+
+           // data.image = selectedImage
+           data.image = (selectedImage && selectedImage.length > 0) ? selectedImage[0] : null;
             if (user?._id) {
                 await axios.put("http://localhost:1111/api/user", data, {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     }
                 });
-            } else if (user?.role === "Admin") {
+            //} else if (user?.role === "Admin") {
+            } else if (role === "Admin") {
+
                 await axios.post("http://localhost:1111/api/user", data, {
                     headers: {
                         Authorization: `Bearer ${token}`,
@@ -124,7 +129,10 @@ const UserForm = ({
             else {
                 if (!data.role)
                     data.role = "Donor";
-                await axios.post("http://localhost:1111/api/user", data);
+                    alert("try post donor")//
+               // await axios.post("http://localhost:1111/api/user", data);
+                await axios.post("http://localhost:1111/api/auth/register", data);
+
             }
             hideDialog();
             if (updateTheUser) updateTheUser();

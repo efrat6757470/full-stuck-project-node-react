@@ -24,7 +24,7 @@ router.get("/student", verifyJWTAdmin, userConroller.getAllStudents);
 router.get("/:id",verifyJWTAll, userConroller.getUserById);
 router.put("/:id", verifyJWTAdmin, userConroller.inactiveUserById);
 router.put("/",verifyJWTAll, userConroller.updateUser);
-router.post("/",verifyJWTAll, userConroller.addUser);
+router.post("/",verifyJWTAdmin, userConroller.addUser);
 router.post("/upload-image", upload.array("image", 10),userConroller.uploadImage)
 router.delete('/delete-image',verifyJWTAll,userConroller.deleteImage)
 module.exports = router;
