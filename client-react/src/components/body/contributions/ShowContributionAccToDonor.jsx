@@ -18,7 +18,7 @@ const ShowContributionAccToDonor = () => {
 
     const getContributionsByDonor = async () => {
         try {
-            const res = await axios.get(`http://localhost:1111/api/contribution/donor/${user._id}`, {
+            const res = await axios.get(`https://full-stuck-project-node-react.onrender.com/api/contribution/donor/${user._id}`, {
                 headers: { Authorization: `Bearer ${token}` }
             });
             setContributions(res.data);
@@ -48,7 +48,7 @@ const ShowContributionAccToDonor = () => {
         }
         if (window.confirm("Are you sure you want to delete this record?")) {
             try{
-            await axios.delete(`http://localhost:1111/api/contribution/${rowData._id}`, {
+            await axios.delete(`https://full-stuck-project-node-react.onrender.com/api/contribution/${rowData._id}`, {
                 headers: { Authorization: `Bearer ${token}` }
             });
             getContributionsByDonor();

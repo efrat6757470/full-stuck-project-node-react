@@ -18,7 +18,7 @@ export default function StudentDetails() {
         if (!user?.image && !rowData?.image) return null;
         const imageUrl = rowData.image.startsWith('http')
             ? user.image
-            : `http://localhost:1111${user.image}`;
+            : `https://full-stuck-project-node-react.onrender.com${user.image}`;
         return (
             <div style={{
                 width: '100%',
@@ -63,7 +63,7 @@ export default function StudentDetails() {
         </>
     );
     const getStudent=async()=>{
-        const res = await axios.get(`http://localhost:1111/api/user/${user._id}`,
+        const res = await axios.get(`https://full-stuck-project-node-react.onrender.com/api/user/${user._id}`,
             { headers: { Authorization: `Bearer ${token}` } });
             dispatch(setUser(res.data));
 
@@ -73,7 +73,7 @@ useEffect(()=>{
 },[])
     const updateTheUser = async () => {
         try {
-            const res = await axios.get(`http://localhost:1111/api/user/${user._id}`,
+            const res = await axios.get(`https://full-stuck-project-node-react.onrender.com/api/user/${user._id}`,
                 { headers: { Authorization: `Bearer ${token}` } });
             dispatch(setUser(res.data));
         }

@@ -20,9 +20,9 @@ const ShowMSDetails = () => {
     const [enableAdd, setEnableAdd] = useState(true)
     const getAllMSDetails = async () => {
         try {
-            const res = await axios.get('http://localhost:1111/api/monthlyScholarshipDetails',
+            const res = await axios.get('https://full-stuck-project-node-react.onrender.com/api/monthlyScholarshipDetails',
                 { headers: { Authorization: `Bearer ${token}` } });
-            const addedMsdetails = await axios.get('http://localhost:1111/api/monthlyScholarshipDetails/thisMonth',
+            const addedMsdetails = await axios.get('https://full-stuck-project-node-react.onrender.com/api/monthlyScholarshipDetails/thisMonth',
                 { headers: { Authorization: `Bearer ${token}` } });
             if (addedMsdetails.data !== "")
                 setEnableAdd(false)
@@ -48,7 +48,7 @@ const ShowMSDetails = () => {
             if (window.confirm("Are you sure you want to delete this record?")) {
                 {
                     try {
-                        const res = await axios.delete(`http://localhost:1111/api/monthlyScholarshipDetails/${rowData._id}`,
+                        const res = await axios.delete(`https://full-stuck-project-node-react.onrender.com/api/monthlyScholarshipDetails/${rowData._id}`,
                             { headers: { Authorization: `Bearer ${token}` } });
                         getAllMSDetails();
                         setEnableAdd(true)

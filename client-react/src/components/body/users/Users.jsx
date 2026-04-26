@@ -35,7 +35,7 @@ export default function Users() {
 
     const getUsers = async () => {
         try {
-            const res = await axios.get("http://localhost:1111/api/user",
+            const res = await axios.get("https://full-stuck-project-node-react.onrender.com/api/user",
                 { headers: { Authorization: `Bearer ${token}` } })
             setUsers(res.data)
             console.log(users);
@@ -103,7 +103,7 @@ export default function Users() {
                 try {
                     //if (user.image[0]) {
                     if (user?.image) {
-                        await axios.delete('http://localhost:1111/api/user/delete-image', {
+                        await axios.delete('https://full-stuck-project-node-react.onrender.com/api/user/delete-image', {
                             data: { 
                                 url: Array.isArray(user.image) ? user.image[0] : user.image,
                                  _id: user._id }
@@ -111,7 +111,7 @@ export default function Users() {
                             { headers: { "Content-Type": "application/json" } }
                         );
                     }
-                    const res = await axios.put(`http://localhost:1111/api/user/${user._id}`, {},
+                    const res = await axios.put(`https://full-stuck-project-node-react.onrender.com/api/user/${user._id}`, {},
                         { headers: { Authorization: `Bearer ${token}` } });
                     getUsers();
                 }
@@ -159,7 +159,7 @@ export default function Users() {
         if (!rowData?.image) return null;
         const imageUrl = rowData.image.startsWith('http')
             ? rowData.image
-            : `http://localhost:1111${rowData.image}`;
+            : `https://full-stuck-project-node-react.onrender.com${rowData.image}`;
         return (
             <img
                 src={imageUrl}

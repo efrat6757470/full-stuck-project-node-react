@@ -48,7 +48,7 @@
 //     // };
 
 //     const getStudents = async () => {
-//         const res = await axios.get("http://localhost:1111/api/user/student",
+//         const res = await axios.get("https://full-stuck-project-node-react.onrender.com/api/user/student",
 //             { headers: { Authorization: `Bearer ${token}` } }
 //         )
 //         setStudents(res.data)
@@ -110,7 +110,7 @@
 
 
 //     const handleDelete = async (rowData) => {
-//             const res = await axios.delete(`http://localhost:1111/api/user/${rowData._id}`)
+//             const res = await axios.delete(`https://full-stuck-project-node-react.onrender.com/api/user/${rowData._id}`)
 //             console.log(res);
 //             getStudents();
 //     };

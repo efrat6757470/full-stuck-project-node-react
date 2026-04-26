@@ -21,7 +21,7 @@ const StudentScholarships = () => {
     useEffect(() => {
         const getAllStudentScholarships = async () => {
             try {
-                const res = await axios.get('http://localhost:1111/api/studentScholarship',
+                const res = await axios.get('https://full-stuck-project-node-react.onrender.com/api/studentScholarship',
                     { headers: { Authorization: `Bearer ${token}` } });
                 setStudentScholarships(res.data);
             }

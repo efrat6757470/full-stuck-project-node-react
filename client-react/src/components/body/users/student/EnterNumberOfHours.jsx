@@ -24,7 +24,7 @@ const EnterNumberOfHours = ({
      
     const getNumHoursInCurMonth = async () => {
         try{
-        const res = await axios.get("http://localhost:1111/api/monthlyScholarshipDetails/thisMonth",
+        const res = await axios.get("https://full-stuck-project-node-react.onrender.com/api/monthlyScholarshipDetails/thisMonth",
              { headers: { Authorization: `Bearer ${token}` } })
             
            
@@ -46,7 +46,7 @@ const EnterNumberOfHours = ({
             console.log(currentScholarship, "mmmm");
             data = { ...data, id: currentScholarship._id }
             try{
-            const res = await axios.put("http://localhost:1111/api/studentScholarship/",
+            const res = await axios.put("https://full-stuck-project-node-react.onrender.com/api/studentScholarship/",
                 data,
                 { headers: { Authorization: `Bearer ${token}` } }
             )}
@@ -55,7 +55,7 @@ const EnterNumberOfHours = ({
             }
         } else {
             try{
-            const res = await axios.post("http://localhost:1111/api/studentScholarship/",
+            const res = await axios.post("https://full-stuck-project-node-react.onrender.com/api/studentScholarship/",
                 data,
                 { headers: { Authorization: `Bearer ${token}` } }
             )}

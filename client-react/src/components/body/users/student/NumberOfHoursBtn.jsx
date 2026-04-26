@@ -14,7 +14,7 @@ export default function NumberOfHoursBtn({getScholarships}) {
         const student = user._id
         console.log(student);
 try{
-        const res = await axios.get(`http://localhost:1111/api/studentScholarship/currentMonth/${student}`,
+        const res = await axios.get(`https://full-stuck-project-node-react.onrender.com/api/studentScholarship/currentMonth/${student}`,
             { headers: { Authorization: `Bearer ${token}` }        
         }
         ) 

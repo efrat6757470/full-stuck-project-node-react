@@ -22,7 +22,7 @@ const CRStatus = () => {
 
     const getAllCRStatuses = async () => {
         try {
-            const res = await axios.get('http://localhost:1111/api/cashRegisterStatus',
+            const res = await axios.get('https://full-stuck-project-node-react.onrender.com/api/cashRegisterStatus',
                 { headers: { Authorization: `Bearer ${token}` } });
             setCRStatuses(res.data);
             setFilteredCRStatuses(res.data);
@@ -59,7 +59,7 @@ const CRStatus = () => {
         if (newDate.getMonth() === new Date().getMonth() && newDate.getFullYear() === new Date().getFullYear()) {
             if (window.confirm("Are you sure you want to delete this record?")) {
                 try {
-                    await axios.delete(`http://localhost:1111/api/cashRegisterStatus/${rowData._id}`,
+                    await axios.delete(`https://full-stuck-project-node-react.onrender.com/api/cashRegisterStatus/${rowData._id}`,
                         { headers: { Authorization: `Bearer ${token}` } });
                     getAllCRStatuses();
                 }

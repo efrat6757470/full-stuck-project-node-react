@@ -36,7 +36,7 @@ const FormCRStatus = (props) => {
         if (data.sumPerAction >= 0) {
             if (data._id === 0) {
                 try {
-                    const res = await axios.post("http://localhost:1111/api/cashRegisterStatus", data,
+                    const res = await axios.post("https://full-stuck-project-node-react.onrender.com/api/cashRegisterStatus", data,
                         { headers: { Authorization: `Bearer ${token}` } })
                     setShowMessage(true);
                     setFormData(data);
@@ -48,7 +48,7 @@ const FormCRStatus = (props) => {
             }
             else {
                 try {
-                    const res = await axios.put(`http://localhost:1111/api/cashRegisterStatus`, data,
+                    const res = await axios.put(`https://full-stuck-project-node-react.onrender.com/api/cashRegisterStatus`, data,
                         { headers: { Authorization: `Bearer ${token}` } })
                     setShowMessage(true);
                     setFormData(data);

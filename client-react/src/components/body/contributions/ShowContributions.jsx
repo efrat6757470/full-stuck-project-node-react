@@ -19,7 +19,7 @@ const Contributions = () => {
     const [contribution, setContribution] = useState({})
     const getAllContributions = async () => {
         try {
-            const res = await axios.get('http://localhost:1111/api/contribution', { headers: { Authorization: `Bearer ${token}` } })
+            const res = await axios.get('https://full-stuck-project-node-react.onrender.com/api/contribution', { headers: { Authorization: `Bearer ${token}` } })
             // // const sortedItems = res.data.sort((a, b) => a.id - b.id);
             // // setUsers(sortedItems)
             setContributions(res.data)
@@ -40,7 +40,7 @@ const Contributions = () => {
             return;
         } if (window.confirm("Are you sure you want to delete this record?")) {
             try{
-            await axios.delete(`http://localhost:1111/api/contribution/${rowData._id}`, {
+            await axios.delete(`https://full-stuck-project-node-react.onrender.com/api/contribution/${rowData._id}`, {
                 headers: { Authorization: `Bearer ${token}` }
             });
             getAllContributions();

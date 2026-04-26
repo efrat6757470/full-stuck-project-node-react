@@ -39,7 +39,7 @@ const UserForm = ({
     
         if (prevImageUrl) {
             try {
-                await axios.delete('http://localhost:1111/api/user/delete-image', {
+                await axios.delete('https://full-stuck-project-node-react.onrender.com/api/user/delete-image', {
                     data: { url: prevImageUrl, _id: user?._id },
                     headers: { Authorization: `Bearer ${token}` }
                 });
@@ -51,7 +51,7 @@ const UserForm = ({
         const formDataIm = new FormData();
         event.files.forEach((file) => formDataIm.append('image', file));
         try {
-            const res = await axios.post('http://localhost:1111/api/user/upload-image', formDataIm, {
+            const res = await axios.post('https://full-stuck-project-node-react.onrender.com/api/user/upload-image', formDataIm, {
                 headers: {
                     'Content-Type': 'multipart/form-data', Authorization: `Bearer ${token}`
                 },
@@ -112,7 +112,7 @@ const UserForm = ({
            // data.image = selectedImage
            data.image = (selectedImage && selectedImage.length > 0) ? selectedImage[0] : null;
             if (user?._id) {
-                await axios.put("http://localhost:1111/api/user", data, {
+                await axios.put("https://full-stuck-project-node-react.onrender.com/api/user", data, {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     }
@@ -120,7 +120,7 @@ const UserForm = ({
             //} else if (user?.role === "Admin") {
             } else if (role === "Admin") {
 
-                await axios.post("http://localhost:1111/api/user", data, {
+                await axios.post("https://full-stuck-project-node-react.onrender.com/api/user", data, {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     }
@@ -130,8 +130,8 @@ const UserForm = ({
                 if (!data.role)
                     data.role = "Donor";
                     alert("try post donor")//
-               // await axios.post("http://localhost:1111/api/user", data);
-                await axios.post("http://localhost:1111/api/auth/register", data);
+               // await axios.post("https://full-stuck-project-node-react.onrender.com/api/user", data);
+                await axios.post("https://full-stuck-project-node-react.onrender.com/api/auth/register", data);
 
             }
             hideDialog();
@@ -353,7 +353,7 @@ const UserForm = ({
                         <span className="p-float-label">
                             <FileUpload
                                 name="image"
-                                url="http://localhost:1111/api/user/upload-image" // Replace with the correct API endpoint
+                                url="https://full-stuck-project-node-react.onrender.com/api/user/upload-image" // Replace with the correct API endpoint
                                 multiple // Allow selecting multiple files
                                 accept="image/*" // Accept only image files
                                 maxFileSize={100000000} // Max file size: 1MB

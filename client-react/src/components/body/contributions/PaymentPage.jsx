@@ -77,7 +77,7 @@ const PaymentPage = (props) => {
         }
         const paymentData = { cardHolderName, cardNumber, expirationDate, cvv };
         alert("Payment Successful!");
-        // const res = await axios.post("http://localhost:1111/api/cashRegisterStatus", { action: "Income", date: new Date(), sumPerAction: props.sumContribution, currentSum: 0 },
+        // const res = await axios.post("https://full-stuck-project-node-react.onrender.com/api/cashRegisterStatus", { action: "Income", date: new Date(), sumPerAction: props.sumContribution, currentSum: 0 },
         //     { headers: { Authorization: `Bearer ${token}` } })
         // console.log(res.data);
         props.setCheckPay(true)
@@ -89,7 +89,7 @@ const PaymentPage = (props) => {
         if (role === "Admin") {
             if (props.formData.id === 0)
                 try {
-                    await axios.post("http://localhost:1111/api/contribution", props.formData,
+                    await axios.post("https://full-stuck-project-node-react.onrender.com/api/contribution", props.formData,
                         { headers: { Authorization: `Bearer ${token}` } });
                 }
                 catch (err) {
@@ -97,7 +97,7 @@ const PaymentPage = (props) => {
                 }
             else {
                 try {
-                    await axios.put("http://localhost:1111/api/contribution", props.formData,
+                    await axios.put("https://full-stuck-project-node-react.onrender.com/api/contribution", props.formData,
                         { headers: { Authorization: `Bearer ${token}` } });
                 }
                 catch (err) {
@@ -109,14 +109,14 @@ const PaymentPage = (props) => {
             console.log("paymentDonor");
             if (props.formData.id === 0)
                 try{
-                await axios.post(`http://localhost:1111/api/contribution/donor/${user._id}`, props.formData,
+                await axios.post(`https://full-stuck-project-node-react.onrender.com/api/contribution/donor/${user._id}`, props.formData,
                     { headers: { Authorization: `Bearer ${token}` } });}
                     catch (err) {
                         console.error(err);
                     }
             else {
                 try{
-                await axios.put(`http://localhost:1111/api/contribution/donor/${user._id}`, props.formData,
+                await axios.put(`https://full-stuck-project-node-react.onrender.com/api/contribution/donor/${user._id}`, props.formData,
                     { headers: { Authorization: `Bearer ${token}` } });
                 }
                 catch (err) {

@@ -227,7 +227,7 @@ const uploadImage = async (req, res) => {
         }
 
         files.push({
-            url: `http://localhost:1111/uploads/${newFilename}`,
+            url: `https://full-stuck-project-node-react.onrender.com/uploads/${newFilename}`,
         });
     }
 

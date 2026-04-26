@@ -39,7 +39,7 @@ const FormMSDetails = (props) => {
         if (data.MaximumNumberOfHours >= minHours && data.MaximumNumberOfHours <= maxHours && data.sumPerHour >= minSumPerHour && data.sumPerHour <= maxSumPerHour) {
             if (data._id === 0) {
                 try {
-                    const res = await axios.post("http://localhost:1111/api/monthlyScholarshipDetails", data,
+                    const res = await axios.post("https://full-stuck-project-node-react.onrender.com/api/monthlyScholarshipDetails", data,
                         { headers: { Authorization: `Bearer ${token}` } })
                     setShowMessage(true);
                     setFormData(data);
@@ -51,7 +51,7 @@ const FormMSDetails = (props) => {
             }
             else {
                 try{
-                const res = await axios.put(`http://localhost:1111/api/monthlyScholarshipDetails`, data,
+                const res = await axios.put(`https://full-stuck-project-node-react.onrender.com/api/monthlyScholarshipDetails`, data,
                     { headers: { Authorization: `Bearer ${token}` } })
                 setShowMessage(true);
                 setFormData(data);

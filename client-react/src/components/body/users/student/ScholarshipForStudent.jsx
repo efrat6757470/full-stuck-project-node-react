@@ -35,7 +35,7 @@ export default function ScholarshipForStudent() {
         const student=user._id
         console.log(user.userId,"user.userId");
         try{
-        const res = await axios.get(`http://localhost:1111/api/studentScholarship/byStudent/${student}`,
+        const res = await axios.get(`https://full-stuck-project-node-react.onrender.com/api/studentScholarship/byStudent/${student}`,
             { headers: { Authorization: `Bearer ${token}` } }
         )
         setScholarship(res.data)
