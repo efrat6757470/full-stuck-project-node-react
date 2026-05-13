@@ -3,8 +3,7 @@ const allowedOrigins = [
     'http://localhost:5500',
     'http://localhost:8000',
     'http://localhost:3001',
-    '[https://scholarlink-zolj.onrender.com](https://scholarlink-zolj.onrender.com)'
-
+    'https://scholarlink-zolj.onrender.com'
 ]
 
 const corsOptions = {
