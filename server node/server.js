@@ -21,7 +21,7 @@ app.use("/api/cashRegisterStatus", require("./routers/cashRegisterStatusRoutes")
 app.use("/api/monthlyScholarshipDetails",require("./routers/monthlyScholarshipDetailsRoutes"))
 app.use("/api/studentScholarship",require("./routers/studentScholarshipRoutes"))
 app.use("/api/user",require("./routers/userRoutes"))
-app.use("/api/happenOnceAMonth",require("./routers/hapenOnceAMonthRoutes"))
+app.use("/api/happenOnceAMonth",require("./routers/happenOnceAMonthRoutes"))
 
 const happenOnceAMonth=require("./controllers/happenOnceAMonthController")
 
