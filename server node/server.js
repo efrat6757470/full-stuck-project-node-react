@@ -23,7 +23,7 @@ app.use("/api/studentScholarship",require("./routers/studentScholarshipRoutes"))
 app.use("/api/user",require("./routers/userRoutes"))
 app.use("/api/happenOnceAMonth",require("./routers/happenOnceAMonthRoutes"))
 
-const happenOnceAMonth=require("./controllers/happenOnceAMonthController")
+const happenOnceAMonth=require("./controllers/happenOnceAMonth")
 
 const scheduleMonthlyTask = async () => {
     const now = new Date();
