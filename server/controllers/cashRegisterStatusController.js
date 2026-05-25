@@ -1,6 +1,6 @@
 const { default: mongoose } = require("mongoose")
 const CashRegisterStatus = require("../models/Cash_Register_Status")
-
+const User =require("../models/User")
 const getAllCashRegisterStatus = async (req, res) => {//vvvvvvvvvvvvvvvvvv
     const cashregistersatuses = await CashRegisterStatus.find().lean()
     if (!cashregistersatuses?.length) {
