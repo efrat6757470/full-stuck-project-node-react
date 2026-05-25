@@ -110,4 +110,126 @@ const deleteCashRegisterStatusById = async (req, res) => {//vvvvvvvvvvvv
     }
     return res.status(400).send("You can't delete from previous month")
 }
-module.exports = { getAllCashRegisterStatus, getCashRegisterStatusById, addCashRegisterStatus, updateCashRegisterStatus, deleteCashRegisterStatusById }
+const calculateMonthlyScholarships = async (req, res) => {
+    try {
+        // שליפת הסטודנטים
+        const students = await User.find({ role: "Student" }).lean();
+        if (!students?.length) {
+            return res.status(200).json({ message: "No students found in the system." });
+        }
+
+        // הגדרת טווח תאריכים (החודש החולף)
+        const startOfMonth = new Date();
+        startOfMonth.setMonth(startOfMonth.getMonth() - 1);
+        startOfMonth.setDate(1); 
+
+        const endOfMonth = new Date();
+        endOfMonth.setDate(0); 
+
+        // שליפת התעריף השעתי לחודש זה
+        const hourlyRate = await monthlyScholarshipDetailsSchema
+            .findOne({
+                date: { $gte: startOfMonth, $lt: endOfMonth },
+            })
+            .lean()
+            .then((doc) => doc?.sumPerHour);
+
+        if (!hourlyRate) {
+            return res.status(404).json({ error: "Hourly rate not found for the requested month." });
+        }
+
+        let totalExpenses = 0;
+
+        // לולאה לעדכון המלגה של כל סטודנט
+        for (const student of students) {
+            const studentScholarship = await StudentScholarship.findOne({
+                student: student._id,
+                date: { $gte: startOfMonth, $lt: endOfMonth },
+            }).exec();
+
+            if (studentScholarship && studentScholarship.numHours) {
+                const scholarshipAmount = hourlyRate * studentScholarship.numHours;
+                studentScholarship.sumMoney = scholarshipAmount;
+                await studentScholarship.save();
+                totalExpenses += scholarshipAmount; 
+            }
+        }
+
+        // שליפת היתרה האחרונה בקופה ויצירת שורת הוצאה חדשה
+        const lastStatus = await Cash_Register_Status.findOne().sort({ date: -1 }).lean();
+        const currentSum = lastStatus ? lastStatus.currentSum : 0;
+
+        const newStatus = await Cash_Register_Status.create({
+            action: "Expense",
+            sumPerAction: totalExpenses,
+            date: new Date(),
+            currentSum: currentSum - totalExpenses, 
+        });
+
+        // החזרת תשובה חיובית לפרונטנד
+        return res.status(200).json({ 
+            success: true,
+            message: "Scholarships calculated and cash register updated successfully.", 
+            totalExpenses 
+        });
+
+    } catch (error) {
+        console.error("Error in calculateMonthlyScholarships:", error);
+        return res.status(500).json({ error: "Internal server error while calculating scholarships." });
+    }
+};
+const processMonthlyContributions = async (req, res) => {
+    try {
+        // הגדרת טווח תאריכים (החודש החולף)
+        const startOfMonth = new Date();
+        startOfMonth.setMonth(startOfMonth.getMonth() - 1); 
+        startOfMonth.setDate(1); 
+
+        const endOfMonth = new Date();
+        endOfMonth.setDate(0); 
+        
+        // סכימת כל התרומות בטווח התאריכים באמצעות אגרגציה
+        const totalDonations = await Contribution.aggregate([
+            {
+                $match: {
+                    date: { $gte: startOfMonth, $lt: endOfMonth },
+                },
+            },
+            {
+                $group: {
+                    _id: null,
+                    totalAmount: { $sum: "$sumContribution" },
+                },
+            },
+        ]);
+
+        const totalIncome = totalDonations[0]?.totalAmount || 0;
+
+        if (totalIncome === 0) {
+            return res.status(200).json({ success: true, message: "No donations found for this month." });
+        }
+
+        // שליפת היתרה האחרונה בקופה ויצירת שורת הכנסה חדשה
+        const lastStatus = await Cash_Register_Status.findOne().sort({ date: -1 }).lean();
+        const currentSum = lastStatus ? lastStatus.currentSum : 0;
+
+        await Cash_Register_Status.create({
+            action: "Income",
+            sumPerAction: totalIncome,
+            date: new Date(),
+            currentSum: currentSum + totalIncome,
+        });
+
+        // החזרת תשובה חיובית לפרונטנד
+        return res.status(200).json({ 
+            success: true,
+            message: "Contributions integrated into cash register successfully.", 
+            totalIncome 
+        });
+
+    } catch (error) {
+        console.error("Error in processMonthlyContributions:", error);
+        return res.status(500).json({ error: "Internal server error while processing contributions." });
+    }
+};
+module.exports = { getAllCashRegisterStatus, getCashRegisterStatusById, addCashRegisterStatus, updateCashRegisterStatus, deleteCashRegisterStatusById,processMonthlyContributions,calculateMonthlyScholarships }

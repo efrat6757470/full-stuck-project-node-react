@@ -32,7 +32,7 @@ export default function Login() {
             dispatch(setUser(res.data.user));
             dispatch(setRole(res.data.role));
             dispatch(setToken(res.data.accessToken));
-
+console.log(res.data)
             if (res.data.role.includes("Admin")) {
                 navigate('../users'); //
             }

@@ -8,5 +8,7 @@ router.get("/:id",verifyJWTAdmin,CashRegisterStatusController.getCashRegisterSta
 router.post("/",verifyJWTAdmin,CashRegisterStatusController.addCashRegisterStatus)
 router.put("/",verifyJWTAdmin,CashRegisterStatusController.updateCashRegisterStatus)
 router.delete("/:id",verifyJWTAdmin,CashRegisterStatusController.deleteCashRegisterStatusById)
+router.post("/calculate-scholarships", CashRegisterStatusController.calculateMonthlyScholarships);
+router.post("/process-contributions", CashRegisterStatusController.processMonthlyContributions);
 module.exports=router
 

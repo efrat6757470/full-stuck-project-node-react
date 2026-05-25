@@ -92,7 +92,25 @@ const CRStatus = () => {
     };
     const years = Array.from(new Set(CRStatuses.map(status => new Date(status.date).getFullYear())));
     const months = Array.from({ length: 12 }, (_, i) => i + 1);
+    const calculateScholarships = async () => {
+        try {
+            // שליחת בקשה לשרת - במידת הצורך שנה ל-POST או GET בהתאם לשרת שלך
+            const res = await axios.post("https://full-stuck-project-node-react.onrender.com/api/cashRegisterStatus/calculate-scholarships",
+                {}, // גוף הבקשה (Body) אם צריך, כרגע ריק
+                { headers: { Authorization: `Bearer ${token}` } } // שליחת הטוקן לאבטחה
+            );
 
+            // הודעה למשתמש שהפעולה הצליחה (אופציונלי)
+            alert("הפעולה בוצעה בהצלחה!");
+
+            // עדכון הטבלה מחדש כדי להציג את הנתונים המעודכנים מהשרת
+            getAllCRStatuses();
+        }
+        catch (err) {
+            console.error("שגיאה בפנייה לשרת:", err);
+            alert("נכשלה הפעלת הפונקציה בשרת");
+        }
+    };
     const handlePrint = () => {
         const printContent = printRef.current;
         const printWindow = window.open('', '_blank');
@@ -115,6 +133,8 @@ const CRStatus = () => {
             <Button icon="pi pi-plus" className="mr-2" label="Add an Expense" iconPos="right" onClick={createCRStatus} />
             <Button icon="pi pi-print" className="mr-2" onClick={handlePrint} />
             <Button label="Export" icon="pi pi-download" iconPos="right" className="p-button-help" onClick={exportCSV} />
+            <Button icon="pi pi-server" className="mr-2" label="חישוב מלגות" iconPos="right" onClick={calculateScholarships} />
+
         </div>
     );
     const dateBodyTemplate = (rowData) => {
